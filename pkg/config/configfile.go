@@ -13,7 +13,7 @@ func CreateConfigFile(config *Configuration) error {
 		return err
 	}
 
-	configFileFolder := path.Join(homeDir, ".cli")
+	configFileFolder := path.Join(homeDir, ".opengovernance")
 
 	err = os.Mkdir(configFileFolder, os.ModePerm)
 	if err != nil {
