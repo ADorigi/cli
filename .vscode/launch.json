@@ -21,7 +21,7 @@
             "args": [
                 "configure",
                 "--output=json",
-                "--endpoint=https:",
+                "--app_endpoint=https:",
                 "--apikey=key"
             ]
         }

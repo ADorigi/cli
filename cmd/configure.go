@@ -23,7 +23,7 @@ to quickly create a Cobra application.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		configuraton := config.NewConfiguration(
 			utils.ReadStringFlag(cmd, "output"),
-			utils.ReadStringFlag(cmd, "endpoint"),
+			utils.ReadStringFlag(cmd, "app_endpoint"),
 			utils.ReadStringFlag(cmd, "apikey"),
 		)
 
@@ -39,11 +39,12 @@ to quickly create a Cobra application.`,
 func init() {
 
 	configureCmd.Flags().String("output", "", "Output format")
-	configureCmd.Flags().String("endpoint", "", "Endpoint for API")
-	configureCmd.Flags().String("apikey", "", "API key")
+	configureCmd.Flags().String("app_endpoint", "", "App endpoint for API")
+	configureCmd.Flags().String("utilization_analyzer_endpoint", "https://optimizer.kaytu.io/", "Endpoint for Utilization and Optimization Service")
+	configureCmd.Flags().String("api_key", "", "API key")
 
 	configureCmd.MarkFlagRequired("output")
-	configureCmd.MarkFlagRequired("endpoint")
+	configureCmd.MarkFlagRequired("app_endpoint")
 	configureCmd.MarkFlagRequired("apikey")
 
 }
