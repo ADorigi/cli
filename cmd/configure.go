@@ -4,8 +4,6 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 
 	"github.com/adorigi/cli/pkg/config"
@@ -22,31 +20,30 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		configuraton := config.NewConfiguration(
 			utils.ReadStringFlag(cmd, "output"),
 			utils.ReadStringFlag(cmd, "endpoint"),
 			utils.ReadStringFlag(cmd, "apikey"),
 		)
 
-		fmt.Println(configuraton)
+		err := config.CreateConfigFile(configuraton)
+		if err != nil {
+			return err
+		}
 
+		return nil
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(configureCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// configureCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
 	configureCmd.Flags().String("output", "", "Output format")
 	configureCmd.Flags().String("endpoint", "", "Endpoint for API")
 	configureCmd.Flags().String("apikey", "", "API key")
+
+	configureCmd.MarkFlagRequired("output")
+	configureCmd.MarkFlagRequired("endpoint")
+	configureCmd.MarkFlagRequired("apikey")
 
 }

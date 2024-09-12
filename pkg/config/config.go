@@ -1,9 +1,9 @@
 package config
 
 type Configuration struct {
-	OutputFormat string
-	Endpoint     string
-	ApiKey       string
+	OutputFormat string `json:"outputformat"`
+	Endpoint     string `json:"endpoint"`
+	ApiKey       string `json:apikey`
 }
 
 func NewConfiguration(
