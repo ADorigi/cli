@@ -24,7 +24,8 @@ to quickly create a Cobra application.`,
 		configuraton := config.NewConfiguration(
 			utils.ReadStringFlag(cmd, "output"),
 			utils.ReadStringFlag(cmd, "app_endpoint"),
-			utils.ReadStringFlag(cmd, "apikey"),
+			utils.ReadStringFlag(cmd, "utilization_analyzer_endpoint"),
+			utils.ReadStringFlag(cmd, "api_key"),
 		)
 
 		err := config.CreateConfigFile(configuraton)
@@ -45,6 +46,6 @@ func init() {
 
 	configureCmd.MarkFlagRequired("output")
 	configureCmd.MarkFlagRequired("app_endpoint")
-	configureCmd.MarkFlagRequired("apikey")
+	configureCmd.MarkFlagRequired("api_key")
 
 }

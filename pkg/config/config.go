@@ -1,19 +1,22 @@
 package config
 
 type Configuration struct {
-	OutputFormat string `json:"outputformat"`
-	Endpoint     string `json:"endpoint"`
-	ApiKey       string `json:apikey`
+	OutputFormat                string `json:"output_format"`
+	ApiEndpoint                 string `json:"api_endpoint"`
+	UtilizationAnalyzerEndpoint string `json:"utilization_analyzer_endpoint"`
+	ApiKey                      string `json:"api_key"`
 }
 
 func NewConfiguration(
 	outputFormat string,
-	endpoint string,
+	apiEndpoint string,
+	utilizationAnalyzerEndpoint string,
 	apiKey string,
 ) *Configuration {
 	return &Configuration{
-		OutputFormat: outputFormat,
-		Endpoint:     endpoint,
-		ApiKey:       apiKey,
+		OutputFormat:                outputFormat,
+		ApiEndpoint:                 apiEndpoint,
+		UtilizationAnalyzerEndpoint: utilizationAnalyzerEndpoint,
+		ApiKey:                      apiKey,
 	}
 }

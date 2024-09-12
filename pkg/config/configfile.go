@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/json"
+	"io"
 	"os"
 	"path"
 )
@@ -36,7 +37,31 @@ func CreateConfigFile(config *Configuration) error {
 
 }
 
-// func ReadConfigFile() (Configuration, error) {
-// 	config :=
-// 	return
-// }
+func ReadConfigFile() (*Configuration, error) {
+	config := &Configuration{}
+
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return nil, err
+	}
+
+	configFilePath := path.Join(homeDir, ".opengovernance", "config.json")
+
+	configFile, err := os.Open(configFilePath)
+	if err != nil {
+		return nil, err
+	}
+	defer configFile.Close()
+
+	data, err := io.ReadAll(configFile)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(data, config)
+	if err != nil {
+		return nil, err
+	}
+
+	return config, nil
+}
