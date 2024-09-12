@@ -6,8 +6,8 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/adorigi/cli/pkg/config"
-	"github.com/adorigi/cli/pkg/utils"
+	"github.com/adorigi/opengovernance/pkg/config"
+	"github.com/adorigi/opengovernance/pkg/utils"
 )
 
 // configureCmd represents the configure command

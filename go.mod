@@ -1,4 +1,4 @@
-module github.com/adorigi/cli
+module github.com/adorigi/opengovernance
 
 go 1.22.5
 

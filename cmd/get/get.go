@@ -11,7 +11,7 @@ import (
 
 // getCmd represents the get command
 var GetCmd = &cobra.Command{
-	Use:   "cli get controls|benchmarks --page-size",
+	Use:   "opengovernance get controls|benchmarks --page-size",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:

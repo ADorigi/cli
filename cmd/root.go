@@ -6,7 +6,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/adorigi/cli/cmd/get"
+	"github.com/adorigi/opengovernance/cmd/get"
 	"github.com/spf13/cobra"
 )
 
@@ -42,7 +42,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cli.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.opengovernance.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
