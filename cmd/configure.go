@@ -1,6 +1,5 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -8,6 +7,9 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+
+	"github.com/adorigi/cli/pkg/config"
+	"github.com/adorigi/cli/pkg/utils"
 )
 
 // configureCmd represents the configure command
@@ -21,7 +23,14 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("configure called")
+		configuraton := config.NewConfiguration(
+			utils.ReadStringFlag(cmd, "output"),
+			utils.ReadStringFlag(cmd, "endpoint"),
+			utils.ReadStringFlag(cmd, "apikey"),
+		)
+
+		fmt.Println(configuraton)
+
 	},
 }
 
@@ -36,5 +45,8 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// configureCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	configureCmd.Flags().String("output", "", "Output format")
+	configureCmd.Flags().String("endpoint", "", "Endpoint for API")
+	configureCmd.Flags().String("apikey", "", "API key")
+
 }
