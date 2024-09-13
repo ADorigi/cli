@@ -26,3 +26,8 @@ type Control struct {
 	Query           Query    `json:"query"`
 	FindingsSummary *string  `json:"findings_summary"`
 }
+
+type RequestPayload struct {
+	Cursor  int `json:"cursor"`
+	PerPage int `json:"per_page"`
+}

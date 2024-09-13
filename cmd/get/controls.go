@@ -12,6 +12,7 @@ import (
 
 	"github.com/adorigi/opengovernance/pkg/config"
 	"github.com/adorigi/opengovernance/pkg/types"
+	"github.com/adorigi/opengovernance/pkg/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -33,12 +34,22 @@ to quickly create a Cobra application.`,
 			return err
 		}
 		bearer := fmt.Sprintf("Bearer %s", configuration.ApiKey)
-		payload := []byte(`
-		{
-			"cursor": 1,
-			"per_page": 10
+		// payload := []byte(`
+		// {
+		// 	"cursor": 1,
+		// 	"per_page": 10
+		// }
+		// `)
+
+		requestPayload := types.RequestPayload{
+			Cursor:  1,
+			PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
 		}
-		`)
+
+		payload, err := json.Marshal(requestPayload)
+		if err != nil {
+			return err
+		}
 
 		request, err := http.NewRequest("GET", "https://demo4.kaytu.sh/main/compliance/api/v2/controls", bytes.NewBuffer(payload))
 		if err != nil {
