@@ -27,6 +27,7 @@ to quickly create a Cobra application.`,
 func init() {
 
 	GetCmd.AddCommand(controlsCmd)
+	GetCmd.AddCommand(benchmarksCmd)
 
 	GetCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
 

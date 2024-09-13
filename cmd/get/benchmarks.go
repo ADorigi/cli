@@ -16,9 +16,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// controlsCmd represents the controls command
-var controlsCmd = &cobra.Command{
-	Use:   "controls",
+// benchmarksCmd represents the benchmarks command
+var benchmarksCmd = &cobra.Command{
+	Use:   "benchmarks",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -51,7 +51,7 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		request, err := http.NewRequest("GET", "https://demo4.kaytu.sh/main/compliance/api/v2/controls", bytes.NewBuffer(payload))
+		request, err := http.NewRequest("GET", "https://demo4.kaytu.sh/main/compliance/api/v2/benchmarks", bytes.NewBuffer(payload))
 		if err != nil {
 			return err
 		}
