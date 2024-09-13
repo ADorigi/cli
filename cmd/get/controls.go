@@ -11,6 +11,7 @@ import (
 	"net/http"
 
 	"github.com/adorigi/opengovernance/pkg/config"
+	"github.com/adorigi/opengovernance/pkg/output"
 	"github.com/adorigi/opengovernance/pkg/types"
 	"github.com/adorigi/opengovernance/pkg/utils"
 	"github.com/spf13/cobra"
@@ -51,7 +52,7 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		request, err := http.NewRequest("GET", "https://demo4.kaytu.sh/main/compliance/api/v2/controls", bytes.NewBuffer(payload))
+		request, err := http.NewRequest("POST", "https://demo4.kaytu.sh/main/compliance/api/v2/controls", bytes.NewBuffer(payload))
 		if err != nil {
 			return err
 		}
@@ -74,7 +75,18 @@ to quickly create a Cobra application.`,
 		if err != nil {
 			return err
 		}
-		fmt.Println(len(controls))
+
+		if configuration.OutputFormat == "table" {
+			rows := utils.GenerateControlRows(controls)
+
+			output.PrintControlsTable(rows)
+		} else {
+			js, err := json.MarshalIndent(controls, "", "   ")
+			if err != nil {
+				return err
+			}
+			fmt.Print(string(js))
+		}
 
 		return nil
 	},
