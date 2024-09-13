@@ -69,12 +69,11 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		var controls []types.Control
-		err = json.Unmarshal(body, &controls)
+		var benchmarks []types.BenchMark
+		err = json.Unmarshal(body, &benchmarks)
 		if err != nil {
 			return err
 		}
-		fmt.Println(len(controls))
 
 		return nil
 	},
