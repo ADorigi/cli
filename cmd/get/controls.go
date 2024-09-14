@@ -4,7 +4,6 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package get
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -12,6 +11,7 @@ import (
 
 	"github.com/adorigi/opengovernance/pkg/config"
 	"github.com/adorigi/opengovernance/pkg/output"
+	"github.com/adorigi/opengovernance/pkg/request"
 	"github.com/adorigi/opengovernance/pkg/types"
 	"github.com/adorigi/opengovernance/pkg/utils"
 	"github.com/spf13/cobra"
@@ -34,24 +34,17 @@ to quickly create a Cobra application.`,
 		if err != nil {
 			return err
 		}
-		bearer := fmt.Sprintf("Bearer %s", configuration.ApiKey)
 
-		requestPayload := types.RequestPayload{
-			Cursor:  1,
-			PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
-		}
-
-		payload, err := json.Marshal(requestPayload)
+		request, err := request.GenerateRequest(
+			configuration.ApiKey,
+			configuration.ApiEndpoint,
+			cmd,
+			"POST",
+			"main/compliance/api/v2/controls",
+		)
 		if err != nil {
 			return err
 		}
-
-		request, err := http.NewRequest("POST", fmt.Sprintf("%s/controls", configuration.ApiEndpoint), bytes.NewBuffer(payload))
-		if err != nil {
-			return err
-		}
-		request.Header.Add("Authorization", bearer)
-		request.Header.Set("Content-Type", "application/json")
 
 		response, err := client.Do(request)
 		if err != nil {
