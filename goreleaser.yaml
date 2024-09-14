@@ -1,0 +1,54 @@
+---
+project_name: opengovernance
+
+release:
+  github:
+    owner: "{{ .Env.REPOSITORY_OWNER }}"
+    name:  "{{ .Env.REPOSITORY_NAME }}"
+
+checksum: {}
+
+builds:
+  - id: linux
+    binary: opengovernance
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+    main: ./main.go
+  - id: darwin
+    binary: opengovernance
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+    main: ./main.go
+  - id: windows
+    binary: opengovernance
+    goos:
+      - windows
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+    main: ./main.go
+archives:
+  - id: binary
+    format: binary
+  - id: windows
+    format: zip
+    builds: [windows]
+  - id: linux
+    format: tar.gz
+    builds: [linux]
+  - id: darwin 
+    format: tar.gz
+    builds: [darwin]
+
+
