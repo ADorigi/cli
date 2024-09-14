@@ -35,12 +35,22 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
+		requestPayload := types.RequestPayload{
+			Cursor:  1,
+			PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
+		}
+
+		payload, err := json.Marshal(requestPayload)
+		if err != nil {
+			return err
+		}
+
 		request, err := request.GenerateRequest(
 			configuration.ApiKey,
 			configuration.ApiEndpoint,
-			cmd,
 			"POST",
 			"main/compliance/api/v2/controls",
+			payload,
 		)
 		if err != nil {
 			return err
