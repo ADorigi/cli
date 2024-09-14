@@ -46,7 +46,7 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		request, err := http.NewRequest("POST", "https://demo4.kaytu.sh/main/compliance/api/v2/benchmarks", bytes.NewBuffer(payload))
+		request, err := http.NewRequest("POST", fmt.Sprintf("%s/benchmarks", configuration.ApiEndpoint), bytes.NewBuffer(payload))
 		if err != nil {
 			return err
 		}

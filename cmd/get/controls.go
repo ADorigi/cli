@@ -35,12 +35,6 @@ to quickly create a Cobra application.`,
 			return err
 		}
 		bearer := fmt.Sprintf("Bearer %s", configuration.ApiKey)
-		// payload := []byte(`
-		// {
-		// 	"cursor": 1,
-		// 	"per_page": 10
-		// }
-		// `)
 
 		requestPayload := types.RequestPayload{
 			Cursor:  1,
@@ -52,7 +46,7 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		request, err := http.NewRequest("POST", "https://demo4.kaytu.sh/main/compliance/api/v2/controls", bytes.NewBuffer(payload))
+		request, err := http.NewRequest("POST", fmt.Sprintf("%s/controls", configuration.ApiEndpoint), bytes.NewBuffer(payload))
 		if err != nil {
 			return err
 		}
