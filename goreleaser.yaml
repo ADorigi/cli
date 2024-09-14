@@ -3,8 +3,8 @@ project_name: opengovernance
 
 release:
   github:
-    owner: "{{ .Env.REPOSITORY_OWNER }}"
-    name:  "{{ .Env.REPOSITORY_NAME }}"
+    # owner: "{{ .Env.REPOSITORY_OWNER }}"
+    # name:  "{{ .Env.REPOSITORY_NAME }}"
 
 checksum: {}
 
