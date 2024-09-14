@@ -11,6 +11,7 @@ import (
 	"net/http"
 
 	"github.com/adorigi/opengovernance/pkg/config"
+	"github.com/adorigi/opengovernance/pkg/output"
 	"github.com/adorigi/opengovernance/pkg/types"
 	"github.com/adorigi/opengovernance/pkg/utils"
 	"github.com/spf13/cobra"
@@ -34,12 +35,6 @@ to quickly create a Cobra application.`,
 			return err
 		}
 		bearer := fmt.Sprintf("Bearer %s", configuration.ApiKey)
-		// payload := []byte(`
-		// {
-		// 	"cursor": 1,
-		// 	"per_page": 10
-		// }
-		// `)
 
 		requestPayload := types.RequestPayload{
 			Cursor:  1,
@@ -51,7 +46,7 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		request, err := http.NewRequest("GET", "https://demo4.kaytu.sh/main/compliance/api/v2/benchmarks", bytes.NewBuffer(payload))
+		request, err := http.NewRequest("POST", "https://demo4.kaytu.sh/main/compliance/api/v2/benchmarks", bytes.NewBuffer(payload))
 		if err != nil {
 			return err
 		}
@@ -73,6 +68,18 @@ to quickly create a Cobra application.`,
 		err = json.Unmarshal(body, &benchmarks)
 		if err != nil {
 			return err
+		}
+
+		if configuration.OutputFormat == "table" {
+			rows := utils.GenerateBenchmarkRows(benchmarks)
+
+			output.PrintBenchmarksTable(rows)
+		} else {
+			js, err := json.MarshalIndent(benchmarks, "", "   ")
+			if err != nil {
+				return err
+			}
+			fmt.Print(string(js))
 		}
 
 		return nil
