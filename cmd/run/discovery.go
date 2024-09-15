@@ -3,6 +3,7 @@ package run
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/adorigi/opengovernance/pkg/output/tables"
 	"github.com/adorigi/opengovernance/pkg/request"
 	"io"
 	"net/http"
@@ -19,11 +20,15 @@ var discoveryCmd = &cobra.Command{
 	Short: "Run specified benchmark on given integrations",
 	Long:  `Run specified benchmark on given integrations.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-
 		client := &http.Client{}
 		configuration, err := config.ReadConfigFile()
 		if err != nil {
 			return err
+		}
+
+		outputFormat := utils.ReadStringFlag(cmd, "output")
+		if outputFormat == "" {
+			outputFormat = configuration.OutputFormat
 		}
 
 		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration-info")
@@ -80,8 +85,13 @@ var discoveryCmd = &cobra.Command{
 			return err
 		}
 
-		if configuration.OutputFormat == "table" {
-			// TODO
+		if outputFormat == "table" {
+			rows, err := utils.GenerateDiscoveryJobsRows(runDiscoveryResponse)
+			if err != nil {
+				return err
+			}
+
+			tables.PrintDiscoveryJobsTable(rows)
 		} else {
 			js, err := json.MarshalIndent(runDiscoveryResponse, "", "   ")
 			if err != nil {
