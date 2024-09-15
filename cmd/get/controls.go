@@ -45,8 +45,6 @@ to quickly create a Cobra application.`,
 
 		for {
 
-			fmt.Println(cursor)
-
 			requestPayload := types.RequestPayload{
 				Cursor:  cursor,
 				PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
