@@ -59,7 +59,7 @@ to quickly create a Cobra application.`,
 				configuration.ApiKey,
 				configuration.ApiEndpoint,
 				"POST",
-				"main/compliance/api/v2/controls",
+				"main/compliance/api/v3/controls",
 				payload,
 			)
 			if err != nil {

@@ -6,9 +6,10 @@ package get
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/adorigi/opengovernance/pkg/output/tables"
 	"io"
 	"net/http"
+
+	"github.com/adorigi/opengovernance/pkg/output/tables"
 
 	"github.com/adorigi/opengovernance/pkg/config"
 	"github.com/adorigi/opengovernance/pkg/request"
@@ -53,7 +54,7 @@ to quickly create a Cobra application.`,
 			configuration.ApiKey,
 			configuration.ApiEndpoint,
 			"POST",
-			"main/compliance/api/v2/benchmarks",
+			"main/compliance/api/v3/benchmarks",
 			payload,
 		)
 		if err != nil {
