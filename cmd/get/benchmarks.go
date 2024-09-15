@@ -6,11 +6,11 @@ package get
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/adorigi/opengovernance/pkg/output/tables"
 	"io"
 	"net/http"
 
 	"github.com/adorigi/opengovernance/pkg/config"
-	"github.com/adorigi/opengovernance/pkg/output"
 	"github.com/adorigi/opengovernance/pkg/request"
 	"github.com/adorigi/opengovernance/pkg/types"
 	"github.com/adorigi/opengovernance/pkg/utils"
@@ -28,11 +28,15 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-
 		client := &http.Client{}
 		configuration, err := config.ReadConfigFile()
 		if err != nil {
 			return err
+		}
+
+		outputFormat := utils.ReadStringFlag(cmd, "output")
+		if outputFormat == "" {
+			outputFormat = configuration.OutputFormat
 		}
 
 		requestPayload := types.RequestPayload{
@@ -73,10 +77,10 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		if configuration.OutputFormat == "table" {
+		if outputFormat == "table" {
 			rows := utils.GenerateBenchmarkRows(benchmarks)
 
-			output.PrintBenchmarksTable(rows)
+			tables.PrintBenchmarksTable(rows)
 		} else {
 			js, err := json.MarshalIndent(benchmarks, "", "   ")
 			if err != nil {

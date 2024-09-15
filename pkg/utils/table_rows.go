@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"strconv"
 
 	"github.com/adorigi/opengovernance/pkg/types"
@@ -39,4 +40,39 @@ func GenerateBenchmarkRows(benchmarks []types.BenchMark) [][]string {
 
 	return rows
 
+}
+
+func GenerateDiscoveryJobsRows(jobs []types.RunDiscoveryResponse) ([][]string, error) {
+	var rows [][]string
+	for _, job := range jobs {
+		integrationInfo, err := json.Marshal(job.IntegrationInfo)
+		if err != nil {
+			return nil, err
+		}
+		row := []string{
+			strconv.Itoa(int(job.JobId)),
+			job.ResourceType,
+			job.Status,
+			string(integrationInfo),
+			job.FailureReason,
+		}
+		rows = append(rows, row)
+	}
+	return rows, nil
+}
+
+func GenerateComplianceJobsRows(job types.RunBenchmarkResponse) ([][]string, error) {
+	var rows [][]string
+	integrationInfo, err := json.Marshal(job.IntegrationInfo)
+	if err != nil {
+		return nil, err
+	}
+	row := []string{
+		strconv.Itoa(int(job.JobId)),
+		job.BenchmarkId,
+		string(integrationInfo),
+	}
+	rows = append(rows, row)
+
+	return rows, nil
 }
