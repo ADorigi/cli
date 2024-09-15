@@ -6,6 +6,8 @@ type Metadata struct {
 	ID               string            `json:"id"`
 	Title            string            `json:"title"`
 	Description      string            `json:"description"`
+	Connectors       []string          `json:"connectors"`
+	NumberOfControls int               `json:"number_of_controls"`
 	Enabled          bool              `json:"enabled"`
 	TrackDriftEvents bool              `json:"track_drift_events"`
 	PrimaryTables    []string          `json:"primary_tables"`

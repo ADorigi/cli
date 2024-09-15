@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"strconv"
+	"strings"
 
 	"github.com/adorigi/opengovernance/pkg/types"
 )
@@ -33,7 +34,9 @@ func GenerateBenchmarkRows(benchmarks []types.BenchMark) [][]string {
 		row := []string{
 			benchmark.Metadata.ID,
 			benchmark.Metadata.Title,
+			strconv.Itoa(benchmark.Metadata.NumberOfControls),
 			strconv.Itoa(len(benchmark.Metadata.PrimaryTables)),
+			strings.Join(benchmark.Metadata.Connectors, ","),
 		}
 		rows = append(rows, row)
 	}

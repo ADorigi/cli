@@ -91,10 +91,14 @@ func PrintBenchmarksTable(rows [][]string) {
 				style.Width(40)
 			case col == 2:
 				style.Width(10)
+			case col == 3:
+				style.Width(10)
+			case col == 4:
+				style.Width(10)
 			}
 			return style
 		}).
-		Headers("BENCHMARK ID", "BENCHMARK TITLE", "# OF PRIMARY TABLES").
+		Headers("BENCHMARK ID", "BENCHMARK TITLE", "# OF CONTROLS", "# OF PRIMARY TABLES", "CONNECTORS").
 		Rows(rows...)
 
 	fmt.Println(t)
