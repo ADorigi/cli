@@ -1,6 +1,9 @@
 package types
 
-import "strings"
+import (
+	"strings"
+	"time"
+)
 
 type RunBenchmarkByIdRequest struct {
 	IntegrationInfo []IntegrationFilterInfo `json:"integration_info"`
@@ -72,4 +75,21 @@ type RunDiscoveryResponse struct {
 	Status          string          `json:"status"`
 	FailureReason   string          `json:"failure_reason"`
 	IntegrationInfo IntegrationInfo `json:"integration_info"`
+}
+
+type ListJobsByTypeRequest struct {
+	JobType         string                  `json:"job_type"`
+	Selector        string                  `json:"selector"`
+	JobId           []string                `json:"job_id"`
+	IntegrationInfo []IntegrationFilterInfo `json:"integration_info"`
+	Status          []string                `json:"status"`
+	Benchmark       []string                `json:"benchmark"`
+}
+
+type ListJobsByTypeResponse struct {
+	JobId     string    `json:"job_id"`
+	JobType   string    `json:"job_type"`
+	JobStatus string    `json:"job_status"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

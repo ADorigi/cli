@@ -28,12 +28,6 @@ func init() {
 
 	GetCmd.AddCommand(controlsCmd)
 	GetCmd.AddCommand(benchmarksCmd)
-	GetCmd.AddCommand(benchmarkSummaryCmd)
-
-	benchmarkSummaryCmd.PersistentFlags().StringArray("integration-info", []string{}, "Integration info in the form 'integration=AWS,id=123,id_name=name'"+
-		"values are optional and support regex")
-	benchmarkSummaryCmd.PersistentFlags().String("benchmark-id", "", "Benchmark ID")
-	benchmarkSummaryCmd.PersistentFlags().Int("top-integrations-count", 0, "Number of Top Integrations to show")
 
 	GetCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
 

@@ -1,7 +1,4 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
-package get
+package list
 
 import (
 	"encoding/json"
@@ -97,6 +94,7 @@ var benchmarkSummaryCmd = &cobra.Command{
 		}
 
 		if outputFormat == "table" {
+			fmt.Println("Table view not supported, use json view: --output json")
 			// TODO
 		} else {
 			js, err := json.MarshalIndent(summary, "", "   ")
