@@ -6,9 +6,10 @@ package get
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/adorigi/opengovernance/pkg/output/tables"
 	"io"
 	"net/http"
+
+	"github.com/adorigi/opengovernance/pkg/output/tables"
 
 	"github.com/adorigi/opengovernance/pkg/config"
 	"github.com/adorigi/opengovernance/pkg/request"
@@ -39,42 +40,58 @@ to quickly create a Cobra application.`,
 			outputFormat = configuration.OutputFormat
 		}
 
-		requestPayload := types.RequestPayload{
-			Cursor:  1,
-			PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
-		}
-
-		payload, err := json.Marshal(requestPayload)
-		if err != nil {
-			return err
-		}
-
-		request, err := request.GenerateRequest(
-			configuration.ApiKey,
-			configuration.ApiEndpoint,
-			"POST",
-			"main/compliance/api/v2/controls",
-			payload,
-		)
-		if err != nil {
-			return err
-		}
-
-		response, err := client.Do(request)
-		if err != nil {
-			return err
-		}
-		defer response.Body.Close()
-
-		body, err := io.ReadAll(response.Body)
-		if err != nil {
-			return err
-		}
-
+		var cursor = 1
 		var controls []types.Control
-		err = json.Unmarshal(body, &controls)
-		if err != nil {
-			return err
+
+		for {
+
+			fmt.Println(cursor)
+
+			requestPayload := types.RequestPayload{
+				Cursor:  cursor,
+				PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
+			}
+
+			payload, err := json.Marshal(requestPayload)
+			if err != nil {
+				return err
+			}
+
+			request, err := request.GenerateRequest(
+				configuration.ApiKey,
+				configuration.ApiEndpoint,
+				"POST",
+				"main/compliance/api/v2/controls",
+				payload,
+			)
+			if err != nil {
+				return err
+			}
+
+			response, err := client.Do(request)
+			if err != nil {
+				return err
+			}
+			defer response.Body.Close()
+
+			body, err := io.ReadAll(response.Body)
+			if err != nil {
+				return err
+			}
+
+			var getControlsResponse types.GetControlsResponse
+			err = json.Unmarshal(body, &getControlsResponse)
+			if err != nil {
+				return err
+			}
+
+			if len(getControlsResponse.Items) == 0 {
+				break
+			}
+
+			controls = append(controls, getControlsResponse.Items...)
+			cursor += 1
+
 		}
 
 		if outputFormat == "table" {

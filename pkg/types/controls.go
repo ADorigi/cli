@@ -27,6 +27,11 @@ type Control struct {
 	FindingsSummary *string  `json:"findings_summary"`
 }
 
+type GetControlsResponse struct {
+	Items      []Control `json:"items"`
+	TotalCount int64     `json:"total_count"`
+}
+
 type RequestPayload struct {
 	Cursor  int `json:"cursor"`
 	PerPage int `json:"per_page"`
