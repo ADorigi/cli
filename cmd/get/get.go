@@ -20,7 +20,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Usage: opengovernance get controls|benchmarks --page-size")
+		fmt.Println("Usage: checkctl get controls|benchmarks --page-size")
 	},
 }
 
@@ -30,6 +30,7 @@ func init() {
 	GetCmd.AddCommand(benchmarksCmd)
 
 	GetCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
+	GetCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
 
 	GetCmd.AddCommand(complianceSummaryCmd)
 	complianceSummaryCmd.PersistentFlags().StringArray("integration", []string{}, "Integration info in the form 'integration=AWS,id=123,id_name=name'"+

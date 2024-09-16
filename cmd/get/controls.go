@@ -6,14 +6,15 @@ package get
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/adorigi/opengovernance/pkg/output/tables"
 	"io"
 	"net/http"
 
-	"github.com/adorigi/opengovernance/pkg/config"
-	"github.com/adorigi/opengovernance/pkg/request"
-	"github.com/adorigi/opengovernance/pkg/types"
-	"github.com/adorigi/opengovernance/pkg/utils"
+	"github.com/adorigi/checkctl/pkg/output/tables"
+
+	"github.com/adorigi/checkctl/pkg/config"
+	"github.com/adorigi/checkctl/pkg/request"
+	"github.com/adorigi/checkctl/pkg/types"
+	"github.com/adorigi/checkctl/pkg/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -40,7 +41,7 @@ to quickly create a Cobra application.`,
 		}
 
 		requestPayload := types.RequestPayload{
-			Cursor:  1,
+			Cursor:  int(utils.ReadIntFlag(cmd, "page-number")),
 			PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
 		}
 
@@ -53,7 +54,7 @@ to quickly create a Cobra application.`,
 			configuration.ApiKey,
 			configuration.ApiEndpoint,
 			"POST",
-			"main/compliance/api/v2/controls",
+			"main/compliance/api/v3/controls",
 			payload,
 		)
 		if err != nil {
@@ -71,23 +72,30 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		var controls []types.Control
-		err = json.Unmarshal(body, &controls)
+		var getControlsResponse types.GetControlsResponse
+		err = json.Unmarshal(body, &getControlsResponse)
 		if err != nil {
 			return err
 		}
 
 		if outputFormat == "table" {
-			rows := utils.GenerateControlRows(controls)
+			rows := utils.GenerateControlRows(getControlsResponse.Items)
 
 			tables.PrintControlsTable(rows)
 		} else {
-			js, err := json.MarshalIndent(controls, "", "   ")
+			js, err := json.MarshalIndent(getControlsResponse.Items, "", "   ")
 			if err != nil {
 				return err
 			}
 			fmt.Print(string(js))
 		}
+
+		fmt.Printf(
+			"\n\n\n\nNext Page: \n\tcheckctl get controls --page-size %d --page-number %d --output %s\n",
+			utils.ReadIntFlag(cmd, "page-size"),
+			utils.ReadIntFlag(cmd, "page-number")+1,
+			outputFormat,
+		)
 
 		return nil
 	},

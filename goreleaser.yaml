@@ -1,5 +1,5 @@
 ---
-project_name: opengovernance
+project_name: checkctl
 
 release:
   github:
@@ -10,7 +10,7 @@ checksum: {}
 
 builds:
   - id: linux
-    binary: opengovernance
+    binary: checkctl
     goos:
       - linux
     goarch:
@@ -20,7 +20,7 @@ builds:
       - CGO_ENABLED=0
     main: ./main.go
   - id: darwin
-    binary: opengovernance
+    binary: checkctl
     goos:
       - darwin
     goarch:
@@ -30,7 +30,7 @@ builds:
       - CGO_ENABLED=0
     main: ./main.go
   - id: windows
-    binary: opengovernance
+    binary: checkctl
     goos:
       - windows
     goarch:

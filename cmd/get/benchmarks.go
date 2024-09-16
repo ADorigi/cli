@@ -6,14 +6,15 @@ package get
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/adorigi/opengovernance/pkg/output/tables"
 	"io"
 	"net/http"
 
-	"github.com/adorigi/opengovernance/pkg/config"
-	"github.com/adorigi/opengovernance/pkg/request"
-	"github.com/adorigi/opengovernance/pkg/types"
-	"github.com/adorigi/opengovernance/pkg/utils"
+	"github.com/adorigi/checkctl/pkg/output/tables"
+
+	"github.com/adorigi/checkctl/pkg/config"
+	"github.com/adorigi/checkctl/pkg/request"
+	"github.com/adorigi/checkctl/pkg/types"
+	"github.com/adorigi/checkctl/pkg/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -39,9 +40,11 @@ to quickly create a Cobra application.`,
 			outputFormat = configuration.OutputFormat
 		}
 
-		requestPayload := types.RequestPayload{
-			Cursor:  1,
-			PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
+		requestPayload := types.GetBenchmarkPayload{
+			Cursor:                 int(utils.ReadIntFlag(cmd, "page-number")),
+			PerPage:                int(utils.ReadIntFlag(cmd, "page-size")),
+			OnlyRootBenchmark:      utils.ReadBoolFlag(cmd, "show-only-root"),
+			IncludeFindingsSummary: utils.ReadBoolFlag(cmd, "include-findings-summary"),
 		}
 
 		payload, err := json.Marshal(requestPayload)
@@ -53,7 +56,7 @@ to quickly create a Cobra application.`,
 			configuration.ApiKey,
 			configuration.ApiEndpoint,
 			"POST",
-			"main/compliance/api/v2/benchmarks",
+			"main/compliance/api/v3/benchmarks",
 			payload,
 		)
 		if err != nil {
@@ -71,24 +74,37 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		var benchmarks []types.BenchMark
-		err = json.Unmarshal(body, &benchmarks)
+		var getBenchmarksResponse types.GetBenchmarksResponse
+		err = json.Unmarshal(body, &getBenchmarksResponse)
 		if err != nil {
 			return err
 		}
 
 		if outputFormat == "table" {
-			rows := utils.GenerateBenchmarkRows(benchmarks)
+			rows := utils.GenerateBenchmarkRows(getBenchmarksResponse.Items)
 
 			tables.PrintBenchmarksTable(rows)
 		} else {
-			js, err := json.MarshalIndent(benchmarks, "", "   ")
+			js, err := json.MarshalIndent(getBenchmarksResponse.Items, "", "   ")
 			if err != nil {
 				return err
 			}
 			fmt.Print(string(js))
 		}
 
+		fmt.Printf(
+			"\n\n\n\nNext Page: \n\tcheckctl get benchmarks --page-size %d --page-number %d --output %s\n",
+			utils.ReadIntFlag(cmd, "page-size"),
+			utils.ReadIntFlag(cmd, "page-number")+1,
+			outputFormat,
+		)
+
 		return nil
 	},
+}
+
+func init() {
+	benchmarksCmd.Flags().Bool("show-only-root", true, "Show only root benchmarks(default: true)")
+	benchmarksCmd.Flags().Bool("include-findings-summary", false, "Include findings summary in response(default: false)")
+
 }

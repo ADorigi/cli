@@ -4,17 +4,18 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"github.com/adorigi/opengovernance/cmd/list"
-	"github.com/adorigi/opengovernance/cmd/run"
+	"github.com/adorigi/checkctl/cmd/list"
 	"os"
 
-	"github.com/adorigi/opengovernance/cmd/get"
+	"github.com/adorigi/checkctl/cmd/run"
+
+	"github.com/adorigi/checkctl/cmd/get"
 	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "opengovernance",
+	Use:   "checkctl",
 	Short: "A brief description of your application",
 	Long: `A longer description that spans multiple lines and likely contains
 examples and usage of using your application. For example:
@@ -48,7 +49,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.opengovernance.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.checkctl.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
