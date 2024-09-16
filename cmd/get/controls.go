@@ -9,8 +9,6 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/adorigi/checkctl/pkg/output/tables"
-
 	"github.com/adorigi/checkctl/pkg/config"
 	"github.com/adorigi/checkctl/pkg/request"
 	"github.com/adorigi/checkctl/pkg/types"
@@ -78,17 +76,17 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		if outputFormat == "table" {
-			rows := utils.GenerateControlRows(getControlsResponse.Items)
+		// if outputFormat == "table" {
+		// 	rows := utils.GenerateControlRows(getControlsResponse.Items)
 
-			tables.PrintControlsTable(rows)
-		} else {
-			js, err := json.MarshalIndent(getControlsResponse.Items, "", "   ")
-			if err != nil {
-				return err
-			}
-			fmt.Print(string(js))
+		// 	tables.PrintControlsTable(rows)
+		// } else {
+		js, err := json.MarshalIndent(getControlsResponse.Items, "", "   ")
+		if err != nil {
+			return err
 		}
+		fmt.Print(string(js))
+		// }
 
 		fmt.Printf(
 			"\n\n\n\nNext Page: \n\tcheckctl get controls --page-size %d --page-number %d --output %s\n",

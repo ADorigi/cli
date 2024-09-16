@@ -9,8 +9,6 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/adorigi/checkctl/pkg/output/tables"
-
 	"github.com/adorigi/checkctl/pkg/config"
 	"github.com/adorigi/checkctl/pkg/request"
 	"github.com/adorigi/checkctl/pkg/types"
@@ -80,17 +78,17 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		if outputFormat == "table" {
-			rows := utils.GenerateBenchmarkRows(getBenchmarksResponse.Items)
+		// if outputFormat == "table" {
+		// 	rows := utils.GenerateBenchmarkRows(getBenchmarksResponse.Items)
 
-			tables.PrintBenchmarksTable(rows)
-		} else {
-			js, err := json.MarshalIndent(getBenchmarksResponse.Items, "", "   ")
-			if err != nil {
-				return err
-			}
-			fmt.Print(string(js))
+		// 	tables.PrintBenchmarksTable(rows)
+		// } else {
+		js, err := json.MarshalIndent(getBenchmarksResponse.Items, "", "   ")
+		if err != nil {
+			return err
 		}
+		fmt.Print(string(js))
+		// }
 
 		fmt.Printf(
 			"\n\n\n\nNext Page: \n\tcheckctl get benchmarks --page-size %d --page-number %d --output %s\n",
