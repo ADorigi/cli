@@ -16,7 +16,37 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "checkctl",
 	Short: "CLI for opengovernance",
-	Long:  `CLI for opengovernance`,
+	Long: `CLI for opengovernance
+	Examples:
+
+	Configure checkctl:
+		checkctl configure 
+
+	Run Discovery on one account:
+		checkctl run discovery --integration id_name=account4
+	
+	Run discovery on all accounts:
+    	checkctl run discovery --integration id_name=".*account.*"
+	
+	Run Discovery on all accounts with "prod" in name:
+		checkctl run discovery --integration id_name=".*prod.*"
+
+	Run Compliance Benchmark for a given benchmark ID:
+		checkctl run compliance --benchmark-id aws_audit_manager_control_tower 
+
+	Run Compliance Benchmark on a list of Integrations:
+		checkctl run compliance --benchmark-id aws_audit_manager_control_tower --integration id_name="account1" --integration id_name="account2"
+	
+	Get Compliance Summary for an Integration
+		go run . get compliance-summary-for-integration --benchmark-id aws_audit_manager_control_tower --integration id_name=account3
+	
+	Get Compliance Summary for a Benchmark
+		go run . get compliance-summary-for-benchmark --benchmark-id aws_audit_manager_control_tower
+
+	Get details of job with given id and type: 
+		get job-details --job-id 301 --job-type compliance
+
+	`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
