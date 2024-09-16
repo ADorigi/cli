@@ -20,3 +20,15 @@ type BenchMark struct {
 	Metadata Metadata    `json:"metadata"`
 	Findings interface{} `json:"findings"` // need to update with actual type
 }
+
+type GetBenchmarksResponse struct {
+	Items      []BenchMark `json:"items"`
+	TotalCount int64       `json:"total_count"`
+}
+
+type GetBenchmarkPayload struct {
+	Cursor                 int  `json:"cursor"`
+	PerPage                int  `json:"per_page"`
+	OnlyRootBenchmark      bool `json:"root"`
+	IncludeFindingsSummary bool `json:"finding_summary"`
+}

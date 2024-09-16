@@ -27,13 +27,19 @@ to quickly create a Cobra application.`,
 func init() {
 
 	GetCmd.AddCommand(controlsCmd)
+	controlsCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
+	controlsCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
+
 	GetCmd.AddCommand(benchmarksCmd)
+	benchmarksCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
+	benchmarksCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
 
-	GetCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
-	GetCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
+	GetCmd.AddCommand(complianceSummaryForBenchmarkCmd)
+	complianceSummaryForBenchmarkCmd.PersistentFlags().StringSlice("benchmark-ids", []string{}, "List of Benchmark IDs to get the summary for (optional)")
+	complianceSummaryForBenchmarkCmd.PersistentFlags().Bool("is-root", true, "Whether to return only root benchmarks or not. (matters if benchmark-id list not provided)")
 
-	GetCmd.AddCommand(complianceSummaryCmd)
-	complianceSummaryCmd.PersistentFlags().StringArray("integration", []string{}, "Integration info in the form 'integration=AWS,id=123,id_name=name'"+
+	GetCmd.AddCommand(complianceSummaryForIntegrationCmd)
+	complianceSummaryForIntegrationCmd.PersistentFlags().String("integration", "", "Integration info in the form 'integration=AWS,id=123,id_name=name'"+
 		"values are optional and support regex")
-	complianceSummaryCmd.PersistentFlags().String("benchmark-id", "", "Benchmark ID")
+	complianceSummaryForIntegrationCmd.PersistentFlags().String("benchmark-id", "", "Benchmark ID")
 }

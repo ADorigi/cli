@@ -3,20 +3,20 @@ package get
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/adorigi/opengovernance/pkg/config"
-	"github.com/adorigi/opengovernance/pkg/request"
-	"github.com/adorigi/opengovernance/pkg/types"
-	"github.com/adorigi/opengovernance/pkg/utils"
+	"github.com/adorigi/checkctl/pkg/config"
+	"github.com/adorigi/checkctl/pkg/request"
+	"github.com/adorigi/checkctl/pkg/types"
+	"github.com/adorigi/checkctl/pkg/utils"
 	"github.com/spf13/cobra"
 	"io"
 	"net/http"
 )
 
-// benchmarksCmd represents the benchmarks command
-var complianceSummaryCmd = &cobra.Command{
-	Use:   "compliance-summary",
-	Short: "Get compliance findings summary",
-	Long:  `Get compliance findings summary`,
+// complianceSummaryForIntegrationCmd represents the benchmarks command
+var complianceSummaryForIntegrationCmd = &cobra.Command{
+	Use:   "compliance-summary-for-integration",
+	Short: "Get compliance summary for integration",
+	Long:  `Get compliance summary for integration`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		client := &http.Client{}
 		configuration, err := config.ReadConfigFile()
@@ -35,26 +35,25 @@ var complianceSummaryCmd = &cobra.Command{
 			return nil
 		}
 
-		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration")
-		if err != nil {
-			return err
+		integrationStr := utils.ReadStringFlag(cmd, "integration")
+		if benchmarkId == "" {
+			fmt.Println("Error: must specify integration")
+			return nil
 		}
 
-		var integrations []types.IntegrationFilterInfo
-		for _, integrationStr := range integrationsStr {
-			integrations = append(integrations, types.ParseIntegrationInfo(integrationStr))
-		}
+		integration := types.ParseIntegrationInfo(integrationStr)
 
-		requestPayload := types.GetBenchmarkSummaryV2Request{
-			Integration:          integrations,
-			TopIntegrationsCount: 5,
+		requestPayload := types.ComplianceSummaryOfIntegrationRequest{
+			Integration: integration,
+			BenchmarkId: benchmarkId,
 		}
 
 		payload, err := json.Marshal(requestPayload)
 		if err != nil {
 			return err
 		}
-		url := fmt.Sprintf("main/compliance/api/v2/benchmark/%s/summary", benchmarkId)
+
+		url := fmt.Sprintf("main/compliance/api/v3/compliance/summary/integration")
 		request, err := request.GenerateRequest(
 			configuration.ApiKey,
 			configuration.ApiEndpoint,
@@ -77,7 +76,12 @@ var complianceSummaryCmd = &cobra.Command{
 			return err
 		}
 
-		var summary types.GetBenchmarkSummaryV2Response
+		if response.StatusCode != 200 {
+			fmt.Println(string(body))
+			return nil
+		}
+
+		var summary types.ComplianceSummaryOfIntegrationResponse
 		err = json.Unmarshal(body, &summary)
 		if err != nil {
 			return err

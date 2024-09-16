@@ -56,7 +56,7 @@ var benchmarkCmd = &cobra.Command{
 			return nil
 		}
 
-		url := fmt.Sprintf("main/schedule/api/v2/compliance/benchmark/%s/run", benchmarkId)
+		url := fmt.Sprintf("main/schedule/api/v3/compliance/benchmark/%s/run", benchmarkId)
 		request, err := request.GenerateRequest(
 			configuration.ApiKey,
 			configuration.ApiEndpoint,
@@ -77,6 +77,11 @@ var benchmarkCmd = &cobra.Command{
 		body, err := io.ReadAll(response.Body)
 		if err != nil {
 			return err
+		}
+
+		if response.StatusCode != 200 {
+			fmt.Println(string(body))
+			return nil
 		}
 
 		var runBenchmarkResponse types.RunBenchmarkResponse

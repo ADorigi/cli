@@ -3,10 +3,10 @@ package list
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/adorigi/opengovernance/pkg/config"
-	"github.com/adorigi/opengovernance/pkg/request"
-	"github.com/adorigi/opengovernance/pkg/types"
-	"github.com/adorigi/opengovernance/pkg/utils"
+	"github.com/adorigi/checkctl/pkg/config"
+	"github.com/adorigi/checkctl/pkg/request"
+	"github.com/adorigi/checkctl/pkg/types"
+	"github.com/adorigi/checkctl/pkg/utils"
 	"github.com/spf13/cobra"
 	"io"
 	"net/http"
@@ -112,7 +112,10 @@ var jobsCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println(string(body))
+		if response.StatusCode != 200 {
+			fmt.Println(string(body))
+			return nil
+		}
 
 		var jobs []types.ListJobsByTypeResponse
 		err = json.Unmarshal(body, &jobs)

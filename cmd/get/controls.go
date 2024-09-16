@@ -72,6 +72,11 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
+		if response.StatusCode != 200 {
+			fmt.Println(string(body))
+			return nil
+		}
+
 		var getControlsResponse types.GetControlsResponse
 		err = json.Unmarshal(body, &getControlsResponse)
 		if err != nil {
