@@ -14,7 +14,7 @@ func CreateConfigFile(config *Configuration) error {
 		return err
 	}
 
-	configFileFolder := path.Join(homeDir, ".opengovernance")
+	configFileFolder := path.Join(homeDir, ".checkctl")
 
 	err = os.Mkdir(configFileFolder, os.ModePerm)
 	if err != nil {
@@ -45,7 +45,7 @@ func ReadConfigFile() (*Configuration, error) {
 		return nil, err
 	}
 
-	configFilePath := path.Join(homeDir, ".opengovernance", "config.json")
+	configFilePath := path.Join(homeDir, ".checkctl", "config.json")
 
 	configFile, err := os.Open(configFilePath)
 	if err != nil {

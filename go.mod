@@ -1,4 +1,4 @@
-module github.com/adorigi/opengovernance
+module github.com/adorigi/checkctl
 
 go 1.22.5
 
