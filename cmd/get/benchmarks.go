@@ -40,9 +40,11 @@ to quickly create a Cobra application.`,
 			outputFormat = configuration.OutputFormat
 		}
 
-		requestPayload := types.RequestPayload{
-			Cursor:  1,
-			PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
+		requestPayload := types.GetBenchmarkPayload{
+			Cursor:                 1,
+			PerPage:                int(utils.ReadIntFlag(cmd, "page_size")),
+			OnlyRootBenchmark:      utils.ReadBoolFlag(cmd, "show_only_root"),
+			IncludeFindingsSummary: utils.ReadBoolFlag(cmd, "include_findings_summary"),
 		}
 
 		payload, err := json.Marshal(requestPayload)
@@ -72,18 +74,18 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		var benchmarks []types.BenchMark
-		err = json.Unmarshal(body, &benchmarks)
+		var getBenchmarksResponse types.GetBenchmarksResponse
+		err = json.Unmarshal(body, &getBenchmarksResponse)
 		if err != nil {
 			return err
 		}
 
 		if outputFormat == "table" {
-			rows := utils.GenerateBenchmarkRows(benchmarks)
+			rows := utils.GenerateBenchmarkRows(getBenchmarksResponse.Items)
 
 			tables.PrintBenchmarksTable(rows)
 		} else {
-			js, err := json.MarshalIndent(benchmarks, "", "   ")
+			js, err := json.MarshalIndent(getBenchmarksResponse.Items, "", "   ")
 			if err != nil {
 				return err
 			}
@@ -92,4 +94,10 @@ to quickly create a Cobra application.`,
 
 		return nil
 	},
+}
+
+func init() {
+	benchmarksCmd.Flags().Bool("show_only_root", true, "Show only root benchmarks(default: true)")
+	benchmarksCmd.Flags().Bool("include_findings_summary", false, "Include findings summary in response(default: false)")
+
 }
