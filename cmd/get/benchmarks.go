@@ -9,12 +9,12 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/adorigi/opengovernance/pkg/output/tables"
+	"github.com/adorigi/checkctl/pkg/output/tables"
 
-	"github.com/adorigi/opengovernance/pkg/config"
-	"github.com/adorigi/opengovernance/pkg/request"
-	"github.com/adorigi/opengovernance/pkg/types"
-	"github.com/adorigi/opengovernance/pkg/utils"
+	"github.com/adorigi/checkctl/pkg/config"
+	"github.com/adorigi/checkctl/pkg/request"
+	"github.com/adorigi/checkctl/pkg/types"
+	"github.com/adorigi/checkctl/pkg/utils"
 	"github.com/spf13/cobra"
 )
 

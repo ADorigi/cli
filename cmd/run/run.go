@@ -12,7 +12,7 @@ var RunCmd = &cobra.Command{
 	Short: "Run discovery or benchmark jobs",
 	Long:  `Run discovery or benchmark jobs`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Usage: opengovernance run discovery|benchmark")
+		fmt.Println("Usage: checkctl run discovery|benchmark")
 	},
 }
 

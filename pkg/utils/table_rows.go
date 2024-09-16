@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/adorigi/opengovernance/pkg/types"
+	"github.com/adorigi/checkctl/pkg/types"
 )
 
 func GenerateControlRows(controls []types.Control) [][]string {
