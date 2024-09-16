@@ -41,10 +41,10 @@ to quickly create a Cobra application.`,
 		}
 
 		requestPayload := types.GetBenchmarkPayload{
-			Cursor:                 int(utils.ReadIntFlag(cmd, "page_number")),
-			PerPage:                int(utils.ReadIntFlag(cmd, "page_size")),
-			OnlyRootBenchmark:      utils.ReadBoolFlag(cmd, "show_only_root"),
-			IncludeFindingsSummary: utils.ReadBoolFlag(cmd, "include_findings_summary"),
+			Cursor:                 int(utils.ReadIntFlag(cmd, "page-number")),
+			PerPage:                int(utils.ReadIntFlag(cmd, "page-size")),
+			OnlyRootBenchmark:      utils.ReadBoolFlag(cmd, "show-only-root"),
+			IncludeFindingsSummary: utils.ReadBoolFlag(cmd, "include-findings-summary"),
 		}
 
 		payload, err := json.Marshal(requestPayload)
@@ -93,9 +93,9 @@ to quickly create a Cobra application.`,
 		}
 
 		fmt.Printf(
-			"\n\n\n\nNext Page: \n\tcheckctl get benchmarks --page_size %d --page_number %d --output %s\n",
-			utils.ReadIntFlag(cmd, "page_size"),
-			utils.ReadIntFlag(cmd, "page_number")+1,
+			"\n\n\n\nNext Page: \n\tcheckctl get benchmarks --page-size %d --page-number %d --output %s\n",
+			utils.ReadIntFlag(cmd, "page-size"),
+			utils.ReadIntFlag(cmd, "page-number")+1,
 			outputFormat,
 		)
 
@@ -104,7 +104,7 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	benchmarksCmd.Flags().Bool("show_only_root", true, "Show only root benchmarks(default: true)")
-	benchmarksCmd.Flags().Bool("include_findings_summary", false, "Include findings summary in response(default: false)")
+	benchmarksCmd.Flags().Bool("show-only-root", true, "Show only root benchmarks(default: true)")
+	benchmarksCmd.Flags().Bool("include-findings-summary", false, "Include findings summary in response(default: false)")
 
 }

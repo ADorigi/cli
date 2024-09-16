@@ -41,8 +41,8 @@ to quickly create a Cobra application.`,
 		}
 
 		requestPayload := types.RequestPayload{
-			Cursor:  int(utils.ReadIntFlag(cmd, "page_number")),
-			PerPage: int(utils.ReadIntFlag(cmd, "page_size")),
+			Cursor:  int(utils.ReadIntFlag(cmd, "page-number")),
+			PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
 		}
 
 		payload, err := json.Marshal(requestPayload)
@@ -91,9 +91,9 @@ to quickly create a Cobra application.`,
 		}
 
 		fmt.Printf(
-			"\n\n\n\nNext Page: \n\tcheckctl get controls --page_size %d --page_number %d --output %s\n",
-			utils.ReadIntFlag(cmd, "page_size"),
-			utils.ReadIntFlag(cmd, "page_number")+1,
+			"\n\n\n\nNext Page: \n\tcheckctl get controls --page-size %d --page-number %d --output %s\n",
+			utils.ReadIntFlag(cmd, "page-size"),
+			utils.ReadIntFlag(cmd, "page-number")+1,
 			outputFormat,
 		)
 
