@@ -27,9 +27,27 @@ to quickly create a Cobra application.`,
 func init() {
 
 	GetCmd.AddCommand(controlsCmd)
+	controlsCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
+	controlsCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
+
 	GetCmd.AddCommand(benchmarksCmd)
+	benchmarksCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
+	benchmarksCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
 
-	GetCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
-	GetCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
+	GetCmd.AddCommand(complianceSummaryForIntegrationCmd)
+	complianceSummaryForIntegrationCmd.PersistentFlags().String("integration", "", "Integration info in the form 'integration=AWS,id=123,id_name=name'"+
+		"values are optional and support regex")
+	complianceSummaryForIntegrationCmd.PersistentFlags().String("benchmark-id", "", "Benchmark ID")
 
+	GetCmd.AddCommand(complianceSummaryForBenchmarkCmd)
+	complianceSummaryForBenchmarkCmd.PersistentFlags().StringSlice("benchmark-id", []string{}, "List of Benchmark IDs to get the summary for (optional)")
+	complianceSummaryForBenchmarkCmd.PersistentFlags().Bool("is-root", true, "Whether to return only root benchmarks or not. (matters if benchmark-id list not provided)")
+
+	GetCmd.AddCommand(jobDetailsCmd)
+	jobDetailsCmd.PersistentFlags().String("job-id", "", "Job ID")
+	jobDetailsCmd.PersistentFlags().String("job-type", "", "Job Type. Options: compliance, analytics, discovery")
+
+	GetCmd.AddCommand(jobsCmd)
+	jobsCmd.PersistentFlags().String("job-type", "", "Job Type. Options: compliance, analytics, discovery")
+	jobsCmd.PersistentFlags().String("interval", "90m", "Specify time interval like: 90m, 1h, 50 minutes, 2 hours")
 }

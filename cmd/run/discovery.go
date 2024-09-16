@@ -32,11 +32,11 @@ var discoveryCmd = &cobra.Command{
 			outputFormat = configuration.OutputFormat
 		}
 
-		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration-info")
+		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration")
 		if err != nil {
 			return err
 		}
-		resourceTypes, err := utils.ReadStringArrayFlag(cmd, "resource-type")
+		resourceTypes, err := utils.ReadStringSliceFlag(cmd, "resource-type")
 		if err != nil {
 			return err
 		}
@@ -57,7 +57,7 @@ var discoveryCmd = &cobra.Command{
 			return err
 		}
 
-		url := fmt.Sprintf("main/schedule/api/v2/discovery/run")
+		url := fmt.Sprintf("main/schedule/api/v3/discovery/run")
 		request, err := request.GenerateRequest(
 			configuration.ApiKey,
 			configuration.ApiEndpoint,
@@ -78,6 +78,11 @@ var discoveryCmd = &cobra.Command{
 		body, err := io.ReadAll(response.Body)
 		if err != nil {
 			return err
+		}
+
+		if response.StatusCode != 200 {
+			fmt.Println(string(body))
+			return nil
 		}
 
 		var runDiscoveryResponse []types.RunDiscoveryResponse

@@ -15,9 +15,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// benchmarksCmd represents the benchmarks command
-var benchmarkCmd = &cobra.Command{
-	Use:   "benchmark",
+// complianceCmd represents the benchmarks command
+var complianceCmd = &cobra.Command{
+	Use:   "compliance",
 	Short: "Run specified benchmark on given integrations",
 	Long:  `Run specified benchmark on given integrations.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -32,7 +32,7 @@ var benchmarkCmd = &cobra.Command{
 			outputFormat = configuration.OutputFormat
 		}
 
-		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration-info")
+		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration")
 		if err != nil {
 			return err
 		}
@@ -56,7 +56,7 @@ var benchmarkCmd = &cobra.Command{
 			return nil
 		}
 
-		url := fmt.Sprintf("main/schedule/api/v2/compliance/benchmark/%s/run", benchmarkId)
+		url := fmt.Sprintf("main/schedule/api/v3/compliance/benchmark/%s/run", benchmarkId)
 		request, err := request.GenerateRequest(
 			configuration.ApiKey,
 			configuration.ApiEndpoint,
@@ -77,6 +77,11 @@ var benchmarkCmd = &cobra.Command{
 		body, err := io.ReadAll(response.Body)
 		if err != nil {
 			return err
+		}
+
+		if response.StatusCode != 200 {
+			fmt.Println(string(body))
+			return nil
 		}
 
 		var runBenchmarkResponse types.RunBenchmarkResponse

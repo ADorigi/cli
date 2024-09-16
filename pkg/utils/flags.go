@@ -26,6 +26,14 @@ func ReadStringArrayFlag(cmd *cobra.Command, name string) ([]string, error) {
 	return stringArray, nil
 }
 
+func ReadStringSliceFlag(cmd *cobra.Command, name string) ([]string, error) {
+	stringArray, err := cmd.Flags().GetStringSlice(name)
+	if err != nil {
+		return nil, err
+	}
+	return stringArray, nil
+}
+
 func ReadStringFlag(cmd *cobra.Command, name string) string {
 	if cmd.Flags().Lookup(name) == nil {
 		return ""
