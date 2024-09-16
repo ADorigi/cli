@@ -40,69 +40,62 @@ to quickly create a Cobra application.`,
 			outputFormat = configuration.OutputFormat
 		}
 
-		var cursor = 1
-		var controls []types.Control
+		requestPayload := types.RequestPayload{
+			Cursor:  int(utils.ReadIntFlag(cmd, "page_number")),
+			PerPage: int(utils.ReadIntFlag(cmd, "page_size")),
+		}
 
-		for {
+		payload, err := json.Marshal(requestPayload)
+		if err != nil {
+			return err
+		}
 
-			requestPayload := types.RequestPayload{
-				Cursor:  cursor,
-				PerPage: int(utils.ReadIntFlag(cmd, "page_size")),
-			}
+		request, err := request.GenerateRequest(
+			configuration.ApiKey,
+			configuration.ApiEndpoint,
+			"POST",
+			"main/compliance/api/v3/controls",
+			payload,
+		)
+		if err != nil {
+			return err
+		}
 
-			payload, err := json.Marshal(requestPayload)
-			if err != nil {
-				return err
-			}
+		response, err := client.Do(request)
+		if err != nil {
+			return err
+		}
+		defer response.Body.Close()
 
-			request, err := request.GenerateRequest(
-				configuration.ApiKey,
-				configuration.ApiEndpoint,
-				"POST",
-				"main/compliance/api/v3/controls",
-				payload,
-			)
-			if err != nil {
-				return err
-			}
+		body, err := io.ReadAll(response.Body)
+		if err != nil {
+			return err
+		}
 
-			response, err := client.Do(request)
-			if err != nil {
-				return err
-			}
-			defer response.Body.Close()
-
-			body, err := io.ReadAll(response.Body)
-			if err != nil {
-				return err
-			}
-
-			var getControlsResponse types.GetControlsResponse
-			err = json.Unmarshal(body, &getControlsResponse)
-			if err != nil {
-				return err
-			}
-
-			if len(getControlsResponse.Items) == 0 {
-				break
-			}
-
-			controls = append(controls, getControlsResponse.Items...)
-			cursor += 1
-
+		var getControlsResponse types.GetControlsResponse
+		err = json.Unmarshal(body, &getControlsResponse)
+		if err != nil {
+			return err
 		}
 
 		if outputFormat == "table" {
-			rows := utils.GenerateControlRows(controls)
+			rows := utils.GenerateControlRows(getControlsResponse.Items)
 
 			tables.PrintControlsTable(rows)
 		} else {
-			js, err := json.MarshalIndent(controls, "", "   ")
+			js, err := json.MarshalIndent(getControlsResponse.Items, "", "   ")
 			if err != nil {
 				return err
 			}
 			fmt.Print(string(js))
 		}
+
+		fmt.Printf(
+			"\n\n\n\nNext Page: \n\tcheckctl get controls --page_size %d --page_number %d --output %s\n",
+			utils.ReadIntFlag(cmd, "page_size"),
+			utils.ReadIntFlag(cmd, "page_number")+1,
+			outputFormat,
+		)
 
 		return nil
 	},

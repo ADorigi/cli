@@ -30,5 +30,6 @@ func init() {
 	GetCmd.AddCommand(benchmarksCmd)
 
 	GetCmd.PersistentFlags().Int("page_size", 25, "Defines page size of response")
+	GetCmd.PersistentFlags().Int("page_number", 1, "Defines page number of response")
 
 }

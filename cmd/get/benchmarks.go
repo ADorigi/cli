@@ -41,7 +41,7 @@ to quickly create a Cobra application.`,
 		}
 
 		requestPayload := types.GetBenchmarkPayload{
-			Cursor:                 1,
+			Cursor:                 int(utils.ReadIntFlag(cmd, "page_number")),
 			PerPage:                int(utils.ReadIntFlag(cmd, "page_size")),
 			OnlyRootBenchmark:      utils.ReadBoolFlag(cmd, "show_only_root"),
 			IncludeFindingsSummary: utils.ReadBoolFlag(cmd, "include_findings_summary"),
@@ -91,6 +91,13 @@ to quickly create a Cobra application.`,
 			}
 			fmt.Print(string(js))
 		}
+
+		fmt.Printf(
+			"\n\n\n\nNext Page: \n\tcheckctl get benchmarks --page_size %d --page_number %d --output %s\n",
+			utils.ReadIntFlag(cmd, "page_size"),
+			utils.ReadIntFlag(cmd, "page_number")+1,
+			outputFormat,
+		)
 
 		return nil
 	},
