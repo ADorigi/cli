@@ -3,12 +3,12 @@ package get
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/adorigi/checkctl/pkg/types"
 	"io"
 	"net/http"
 
 	"github.com/adorigi/checkctl/pkg/config"
 	"github.com/adorigi/checkctl/pkg/request"
-	"github.com/adorigi/checkctl/pkg/types"
 	"github.com/adorigi/checkctl/pkg/utils"
 	"github.com/spf13/cobra"
 )
@@ -71,21 +71,59 @@ var jobDetailsCmd = &cobra.Command{
 			return nil
 		}
 
-		var job types.GetComplianceJobStatusResponse
-		err = json.Unmarshal(body, &job)
-		if err != nil {
-			return err
-		}
-
-		if outputFormat == "table" {
-			fmt.Println("Table view not supported, use json view: --output json")
-			//TODO
-		} else {
-			js, err := json.MarshalIndent(job, "", "   ")
+		switch jobType {
+		case "compliance":
+			var job types.GetComplianceJobStatusResponse
+			err = json.Unmarshal(body, &job)
 			if err != nil {
 				return err
 			}
-			fmt.Print(string(js))
+
+			if outputFormat == "table" {
+				fmt.Println("Table view not supported, use json view: --output json")
+				//TODO
+			} else {
+				js, err := json.MarshalIndent(job, "", "   ")
+				if err != nil {
+					return err
+				}
+				fmt.Print(string(js))
+			}
+		case "discovery":
+			var job types.GetDescribeJobStatusResponse
+			err = json.Unmarshal(body, &job)
+			if err != nil {
+				return err
+			}
+
+			if outputFormat == "table" {
+				fmt.Println("Table view not supported, use json view: --output json")
+				//TODO
+			} else {
+				js, err := json.MarshalIndent(job, "", "   ")
+				if err != nil {
+					return err
+				}
+				fmt.Print(string(js))
+			}
+		case "analytics":
+			var job types.GetAnalyticsJobStatusResponse
+			err = json.Unmarshal(body, &job)
+			if err != nil {
+				return err
+			}
+
+			if outputFormat == "table" {
+				fmt.Println("Table view not supported, use json view: --output json")
+				//TODO
+			} else {
+				js, err := json.MarshalIndent(job, "", "   ")
+				if err != nil {
+					return err
+				}
+				fmt.Print(string(js))
+			}
+
 		}
 
 		return nil
