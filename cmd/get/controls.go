@@ -47,7 +47,7 @@ to quickly create a Cobra application.`,
 
 			requestPayload := types.RequestPayload{
 				Cursor:  cursor,
-				PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
+				PerPage: int(utils.ReadIntFlag(cmd, "page_size")),
 			}
 
 			payload, err := json.Marshal(requestPayload)
