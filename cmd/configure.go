@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/adorigi/checkctl/pkg/config"
+	"github.com/adorigi/checkctl/pkg/input"
 	"github.com/adorigi/checkctl/pkg/utils"
 )
 
@@ -21,14 +22,27 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		configuraton := config.NewConfiguration(
-			utils.ReadStringFlag(cmd, "output"),
-			utils.ReadStringFlag(cmd, "app-endpoint"),
-			utils.ReadStringFlag(cmd, "utilization-analyzer-endpoint"),
-			utils.ReadStringFlag(cmd, "api-key"),
-		)
 
-		err := config.CreateConfigFile(configuraton)
+		var configuration *config.Configuration
+		var err error
+
+		if cmd.Flags().Changed("output") && cmd.Flags().Changed("app-endpoint") && cmd.Flags().Changed("api-key") {
+
+			configuration = config.NewConfiguration(
+				utils.ReadStringFlag(cmd, "output"),
+				utils.ReadStringFlag(cmd, "app-endpoint"),
+				utils.ReadStringFlag(cmd, "utilization-analyzer-endpoint"),
+				utils.ReadStringFlag(cmd, "api-key"),
+			)
+
+		} else {
+			configuration, err = input.GetConfigurationFromForm()
+			if err != nil {
+				return err
+			}
+		}
+
+		err = config.CreateConfigFile(configuration)
 		if err != nil {
 			return err
 		}
@@ -43,9 +57,5 @@ func init() {
 	configureCmd.Flags().String("app-endpoint", "", "App endpoint for API")
 	configureCmd.Flags().String("utilization-analyzer-endpoint", "https://optimizer.kaytu.io/", "Endpoint for Utilization and Optimization Service")
 	configureCmd.Flags().String("api-key", "", "API key")
-
-	configureCmd.MarkFlagRequired("output")
-	configureCmd.MarkFlagRequired("app-endpoint")
-	configureCmd.MarkFlagRequired("api-key")
 
 }
