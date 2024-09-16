@@ -43,4 +43,7 @@ func init() {
 	complianceSummaryForBenchmarkCmd.PersistentFlags().StringSlice("benchmark-id", []string{}, "List of Benchmark IDs to get the summary for (optional)")
 	complianceSummaryForBenchmarkCmd.PersistentFlags().Bool("is-root", true, "Whether to return only root benchmarks or not. (matters if benchmark-id list not provided)")
 
+	GetCmd.AddCommand(jobDetailsCmd)
+	jobDetailsCmd.PersistentFlags().String("job-id", "", "Job ID")
+	jobDetailsCmd.PersistentFlags().String("job-type", "", "Job Type. Options: compliance, analytics, discovery")
 }
