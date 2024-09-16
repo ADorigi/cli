@@ -31,4 +31,8 @@ func init() {
 
 	GetCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
 
+	GetCmd.AddCommand(complianceSummaryCmd)
+	complianceSummaryCmd.PersistentFlags().StringArray("integration", []string{}, "Integration info in the form 'integration=AWS,id=123,id_name=name'"+
+		"values are optional and support regex")
+	complianceSummaryCmd.PersistentFlags().String("benchmark-id", "", "Benchmark ID")
 }

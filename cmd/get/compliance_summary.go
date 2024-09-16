@@ -1,24 +1,22 @@
-package list
+package get
 
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
-	"strconv"
-
 	"github.com/adorigi/opengovernance/pkg/config"
 	"github.com/adorigi/opengovernance/pkg/request"
 	"github.com/adorigi/opengovernance/pkg/types"
 	"github.com/adorigi/opengovernance/pkg/utils"
 	"github.com/spf13/cobra"
+	"io"
+	"net/http"
 )
 
 // benchmarksCmd represents the benchmarks command
-var benchmarkSummaryCmd = &cobra.Command{
-	Use:   "benchmark-summary",
-	Short: "Get benchmark findings summary",
-	Long:  `Get benchmark findings summary`,
+var complianceSummaryCmd = &cobra.Command{
+	Use:   "compliance-summary",
+	Short: "Get compliance findings summary",
+	Long:  `Get compliance findings summary`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		client := &http.Client{}
 		configuration, err := config.ReadConfigFile()
@@ -37,7 +35,7 @@ var benchmarkSummaryCmd = &cobra.Command{
 			return nil
 		}
 
-		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration-info")
+		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration")
 		if err != nil {
 			return err
 		}
@@ -47,17 +45,9 @@ var benchmarkSummaryCmd = &cobra.Command{
 			integrations = append(integrations, types.ParseIntegrationInfo(integrationStr))
 		}
 
-		var topIntegrationsCount int
-		topIntegrationsCountStr := utils.ReadStringFlag(cmd, "top-integrations-count")
-		if topIntegrationsCountStr == "" {
-			topIntegrationsCount = 0
-		} else {
-			topIntegrationsCount, err = strconv.Atoi(topIntegrationsCountStr)
-		}
-
 		requestPayload := types.GetBenchmarkSummaryV2Request{
 			Integration:          integrations,
-			TopIntegrationsCount: topIntegrationsCount,
+			TopIntegrationsCount: 5,
 		}
 
 		payload, err := json.Marshal(requestPayload)

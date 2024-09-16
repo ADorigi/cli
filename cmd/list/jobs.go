@@ -53,7 +53,7 @@ var jobsCmd = &cobra.Command{
 			return nil
 		}
 
-		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration-info")
+		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration")
 		if err != nil {
 			return err
 		}

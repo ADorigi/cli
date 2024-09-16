@@ -31,11 +31,11 @@ var discoveryCmd = &cobra.Command{
 			outputFormat = configuration.OutputFormat
 		}
 
-		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration-info")
+		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration")
 		if err != nil {
 			return err
 		}
-		resourceTypes, err := utils.ReadStringArrayFlag(cmd, "resource-type")
+		resourceTypes, err := utils.ReadStringSliceFlag(cmd, "resource-type")
 		if err != nil {
 			return err
 		}

@@ -31,7 +31,7 @@ var benchmarkCmd = &cobra.Command{
 			outputFormat = configuration.OutputFormat
 		}
 
-		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration-info")
+		integrationsStr, err := utils.ReadStringArrayFlag(cmd, "integration")
 		if err != nil {
 			return err
 		}

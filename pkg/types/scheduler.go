@@ -84,7 +84,35 @@ type ListJobsByTypeRequest struct {
 	IntegrationInfo []IntegrationFilterInfo `json:"integration_info"`
 	Status          []string                `json:"status"`
 	Benchmark       []string                `json:"benchmark"`
+	SortBy          JobSort                 `json:"sort_by"`
+	SortOrder       JobSortOrder            `json:"sort_order"`
+	UpdatedAt       struct {
+		From *int64 `json:"from"`
+		To   *int64 `json:"to"`
+	} `json:"updated_at"`
+	CreatedAt struct {
+		From *int64 `json:"from"`
+		To   *int64 `json:"to"`
+	} `json:"created_at"`
+	Cursor  *int64 `json:"cursor"`
+	PerPage *int64 `json:"per_page"`
 }
+
+type JobSort string
+
+const (
+	JobSort_ByJobID        = "id"
+	JobSort_ByJobType      = "job_type"
+	JobSort_ByConnectionID = "connection_id"
+	JobSort_ByStatus       = "status"
+)
+
+type JobSortOrder string
+
+const (
+	JobSortOrder_ASC  = "ASC"
+	JobSortOrder_DESC = "DESC"
+)
 
 type ListJobsByTypeResponse struct {
 	JobId     string    `json:"job_id"`
