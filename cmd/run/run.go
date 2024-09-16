@@ -18,11 +18,11 @@ var RunCmd = &cobra.Command{
 
 func init() {
 
-	RunCmd.AddCommand(benchmarkCmd)
+	RunCmd.AddCommand(complianceCmd)
 
-	benchmarkCmd.PersistentFlags().StringArray("integration", []string{}, "Integration info in the form 'integration=AWS,id=123,id_name=name'"+
+	complianceCmd.PersistentFlags().StringArray("integration", []string{}, "Integration info in the form 'integration=AWS,id=123,id_name=name'"+
 		"values are optional and support regex")
-	benchmarkCmd.PersistentFlags().String("benchmark-id", "", "Benchmark ID")
+	complianceCmd.PersistentFlags().String("benchmark-id", "", "Benchmark ID")
 
 	RunCmd.AddCommand(discoveryCmd)
 

@@ -29,13 +29,12 @@ var complianceSummaryForBenchmarkCmd = &cobra.Command{
 			outputFormat = configuration.OutputFormat
 		}
 
-		benchmarkIDs, err := utils.ReadStringSliceFlag(cmd, "benchmark-ids")
+		benchmarkIDs, err := utils.ReadStringSliceFlag(cmd, "benchmark-id")
 		if err != nil {
 			return err
 		}
 
 		isRoot := utils.ReadBoolFlag(cmd, "is-root")
-
 		requestPayload := types.ComplianceSummaryOfBenchmarkRequest{
 			Benchmarks: benchmarkIDs,
 			IsRoot:     &isRoot,
@@ -74,7 +73,7 @@ var complianceSummaryForBenchmarkCmd = &cobra.Command{
 			return nil
 		}
 
-		var summary types.ComplianceSummaryOfBenchmarkResponse
+		var summary []types.ComplianceSummaryOfBenchmarkResponse
 		err = json.Unmarshal(body, &summary)
 		if err != nil {
 			return err

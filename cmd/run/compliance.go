@@ -15,9 +15,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// benchmarksCmd represents the benchmarks command
-var benchmarkCmd = &cobra.Command{
-	Use:   "benchmark",
+// complianceCmd represents the benchmarks command
+var complianceCmd = &cobra.Command{
+	Use:   "compliance",
 	Short: "Run specified benchmark on given integrations",
 	Long:  `Run specified benchmark on given integrations.`,
 	RunE: func(cmd *cobra.Command, args []string) error {

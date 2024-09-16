@@ -36,11 +36,11 @@ var complianceSummaryForIntegrationCmd = &cobra.Command{
 		}
 
 		integrationStr := utils.ReadStringFlag(cmd, "integration")
-		if benchmarkId == "" {
-			fmt.Println("Error: must specify integration")
+		if integrationStr == "" {
+			fmt.Println(`Error: must specify integration
+Integration info in the form 'integration=AWS,id=123,id_name=name'`)
 			return nil
 		}
-
 		integration := types.ParseIntegrationInfo(integrationStr)
 
 		requestPayload := types.ComplianceSummaryOfIntegrationRequest{

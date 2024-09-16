@@ -34,12 +34,13 @@ func init() {
 	benchmarksCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
 	benchmarksCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
 
-	GetCmd.AddCommand(complianceSummaryForBenchmarkCmd)
-	complianceSummaryForBenchmarkCmd.PersistentFlags().StringSlice("benchmark-ids", []string{}, "List of Benchmark IDs to get the summary for (optional)")
-	complianceSummaryForBenchmarkCmd.PersistentFlags().Bool("is-root", true, "Whether to return only root benchmarks or not. (matters if benchmark-id list not provided)")
-
 	GetCmd.AddCommand(complianceSummaryForIntegrationCmd)
 	complianceSummaryForIntegrationCmd.PersistentFlags().String("integration", "", "Integration info in the form 'integration=AWS,id=123,id_name=name'"+
 		"values are optional and support regex")
 	complianceSummaryForIntegrationCmd.PersistentFlags().String("benchmark-id", "", "Benchmark ID")
+
+	GetCmd.AddCommand(complianceSummaryForBenchmarkCmd)
+	complianceSummaryForBenchmarkCmd.PersistentFlags().StringSlice("benchmark-id", []string{}, "List of Benchmark IDs to get the summary for (optional)")
+	complianceSummaryForBenchmarkCmd.PersistentFlags().Bool("is-root", true, "Whether to return only root benchmarks or not. (matters if benchmark-id list not provided)")
+
 }
