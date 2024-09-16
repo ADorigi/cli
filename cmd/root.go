@@ -4,7 +4,6 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"github.com/adorigi/checkctl/cmd/list"
 	"os"
 
 	"github.com/adorigi/checkctl/cmd/run"
@@ -42,7 +41,6 @@ func init() {
 	rootCmd.AddCommand(configureCmd)
 	rootCmd.AddCommand(get.GetCmd)
 	rootCmd.AddCommand(run.RunCmd)
-	rootCmd.AddCommand(list.ListCmd)
 
 	rootCmd.PersistentFlags().String("output", "", "Output format: json/table")
 	// Here you will define your flags and configuration settings.

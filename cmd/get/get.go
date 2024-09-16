@@ -46,4 +46,8 @@ func init() {
 	GetCmd.AddCommand(jobDetailsCmd)
 	jobDetailsCmd.PersistentFlags().String("job-id", "", "Job ID")
 	jobDetailsCmd.PersistentFlags().String("job-type", "", "Job Type. Options: compliance, analytics, discovery")
+
+	GetCmd.AddCommand(jobsCmd)
+	jobsCmd.PersistentFlags().String("job-type", "", "Job Type. Options: compliance, analytics, discovery")
+	jobsCmd.PersistentFlags().String("interval", "90m", "Specify time interval like: 90m, 1h, 50 minutes, 2 hours")
 }
