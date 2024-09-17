@@ -3,13 +3,14 @@ package get
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+
 	"github.com/adorigi/checkctl/pkg/config"
 	"github.com/adorigi/checkctl/pkg/request"
 	"github.com/adorigi/checkctl/pkg/types"
 	"github.com/adorigi/checkctl/pkg/utils"
 	"github.com/spf13/cobra"
-	"io"
-	"net/http"
 )
 
 // complianceSummaryForIntegrationCmd represents the benchmarks command
@@ -41,6 +42,12 @@ var complianceSummaryForIntegrationCmd = &cobra.Command{
 Integration info in the form 'integration=AWS,id=123,id_name=name'`)
 			return nil
 		}
+
+		if _, ok := configuration.Integrations[integrationStr]; ok {
+			fmt.Printf("Found stored integration %s", integrationStr)
+			integrationStr = configuration.Integrations[integrationStr]
+		}
+
 		integration := types.ParseIntegrationInfo(integrationStr)
 
 		requestPayload := types.ComplianceSummaryOfIntegrationRequest{

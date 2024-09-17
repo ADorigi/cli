@@ -7,3 +7,7 @@ build: clean
 
 goreleaser:
 	REPOSITORY_OWNER=local REPOSITORY_NAME=local goreleaser build --snapshot
+
+install: 
+	rm $(GOPATH)/bin/checkctl
+	go install

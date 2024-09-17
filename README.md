@@ -32,6 +32,18 @@ Non-interactive mode:
 checktl configure --api-key <<api-key>> --app-endpoint https://path.to.app.endpoint --output json
 ```
 
+---
+**_NOTE:_**  Pre-defined integartions can be manually added to the configuration file, by updating the `integrations` field inside `$HOME/.checkctl/config.json`. 
+
+config.json:
+```
+{
+    ...
+    "integrations": {"acc3":"id_name=account3"}
+}
+```
+
+---
 ## get 
 
 ### benchmarks
