@@ -39,6 +39,10 @@ var complianceCmd = &cobra.Command{
 
 		var integrations []types.IntegrationFilterInfo
 		for _, integrationStr := range integrationsStr {
+			if _, ok := configuration.Integrations[integrationStr]; ok {
+				fmt.Printf("Found stored integration %s", integrationStr)
+				integrationStr = configuration.Integrations[integrationStr]
+			}
 			integrations = append(integrations, types.ParseIntegrationInfo(integrationStr))
 		}
 		req := types.RunBenchmarkByIdRequest{
