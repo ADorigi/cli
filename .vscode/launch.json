@@ -24,6 +24,19 @@
                 "--app_endpoint=https:",
                 "--apikey=key"
             ]
+        },
+        {
+            "name": "benchmarks",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/main.go",
+            "args": [
+                "get",
+                "benchmarks",
+                "--page-size=1",
+                "--page-number=1"
+            ]
         }
     ]
 }
