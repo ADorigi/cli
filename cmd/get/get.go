@@ -26,13 +26,13 @@ to quickly create a Cobra application.`,
 
 func init() {
 
-	GetCmd.AddCommand(controlsCmd)
-	controlsCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
-	controlsCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
+	GetCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
+	GetCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
 
+	controlsCmd.Flags().StringSlice("benchmark-id", []string{}, "List of Benchmark IDs to get the description for")
+
+	GetCmd.AddCommand(controlsCmd)
 	GetCmd.AddCommand(benchmarksCmd)
-	benchmarksCmd.PersistentFlags().Int("page-size", 25, "Defines page size of response")
-	benchmarksCmd.PersistentFlags().Int("page-number", 1, "Defines page number of response")
 
 	GetCmd.AddCommand(complianceSummaryForIntegrationCmd)
 	complianceSummaryForIntegrationCmd.PersistentFlags().String("integration", "", "Integration info in the form 'integration=AWS,id=123,id_name=name'"+

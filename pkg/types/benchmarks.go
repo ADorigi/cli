@@ -17,7 +17,7 @@ type Metadata struct {
 }
 
 type BenchMark struct {
-	Metadata Metadata    `json:"metadata"`
+	Metadata Metadata    `json:"benchmark"`
 	Findings interface{} `json:"findings"` // need to update with actual type
 }
 
