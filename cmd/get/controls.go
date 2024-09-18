@@ -42,7 +42,7 @@ var controlsCmd = &cobra.Command{
 		}
 
 		if _, ok := configuration.Benchmarks[benchmarkIDs[0]]; ok {
-			fmt.Printf("Found stored integration %s", benchmarkIDs[0])
+			fmt.Printf("Found stored Benchmark %s", benchmarkIDs[0])
 			benchmarkIDs = configuration.Benchmarks[benchmarkIDs[0]]
 		}
 
