@@ -32,7 +32,12 @@ type GetControlsResponse struct {
 	TotalCount int64     `json:"total_count"`
 }
 
-type RequestPayload struct {
-	Cursor  int `json:"cursor"`
-	PerPage int `json:"per_page"`
+type FindingFilters struct {
+	BenchmarkID []string `json:"benchmarkID"`
+}
+
+type GetControlsPayload struct {
+	Cursor         int            `json:"cursor"`
+	PerPage        int            `json:"per_page"`
+	FindingFilters FindingFilters `json:"finding_filters"`
 }

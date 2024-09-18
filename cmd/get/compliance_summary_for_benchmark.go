@@ -3,13 +3,14 @@ package get
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+
 	"github.com/adorigi/checkctl/pkg/config"
 	"github.com/adorigi/checkctl/pkg/request"
 	"github.com/adorigi/checkctl/pkg/types"
 	"github.com/adorigi/checkctl/pkg/utils"
 	"github.com/spf13/cobra"
-	"io"
-	"net/http"
 )
 
 // complianceSummaryForBenchmarkCmd represents the benchmarks command
@@ -32,6 +33,11 @@ var complianceSummaryForBenchmarkCmd = &cobra.Command{
 		benchmarkIDs, err := utils.ReadStringSliceFlag(cmd, "benchmark-id")
 		if err != nil {
 			return err
+		}
+
+		if _, ok := configuration.Benchmarks[benchmarkIDs[0]]; ok {
+			fmt.Printf("Found stored Benchmark IDs %s", benchmarkIDs[0])
+			benchmarkIDs = configuration.Benchmarks[benchmarkIDs[0]]
 		}
 
 		isRoot := utils.ReadBoolFlag(cmd, "is-root")

@@ -36,9 +36,22 @@ var controlsCmd = &cobra.Command{
 			outputFormat = configuration.OutputFormat
 		}
 
-		requestPayload := types.RequestPayload{
+		benchmarkIDs, err := utils.ReadStringSliceFlag(cmd, "benchmark-id")
+		if err != nil {
+			return err
+		}
+
+		if _, ok := configuration.Benchmarks[benchmarkIDs[0]]; ok {
+			fmt.Printf("Found stored integration %s", benchmarkIDs[0])
+			benchmarkIDs = configuration.Benchmarks[benchmarkIDs[0]]
+		}
+
+		requestPayload := types.GetControlsPayload{
 			Cursor:  int(utils.ReadIntFlag(cmd, "page-number")),
 			PerPage: int(utils.ReadIntFlag(cmd, "page-size")),
+			FindingFilters: types.FindingFilters{
+				BenchmarkID: benchmarkIDs,
+			},
 		}
 
 		payload, err := json.Marshal(requestPayload)
