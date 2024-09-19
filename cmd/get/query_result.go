@@ -4,21 +4,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/adorigi/checkctl/pkg/output"
+	"github.com/adorigi/checkctl/pkg/types"
 	"io"
 	"net/http"
 
 	"github.com/adorigi/checkctl/pkg/config"
 	"github.com/adorigi/checkctl/pkg/request"
-	"github.com/adorigi/checkctl/pkg/types"
 	"github.com/adorigi/checkctl/pkg/utils"
 	"github.com/spf13/cobra"
 )
 
-// complianceSummaryForBenchmarkCmd represents the benchmarks command
-var complianceSummaryForBenchmarkCmd = &cobra.Command{
-	Use:   "compliance-summary-for-benchmark",
-	Short: "Get compliance summary for benchmark",
-	Long:  `Get compliance summary for benchmark`,
+// queryResultCmd represents the controls command
+var queryResultCmd = &cobra.Command{
+	Use:   "query-result",
+	Short: "Get async query run result by run id",
+	Long:  `Get async query run result by run id`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		client := &http.Client{}
 		configuration, err := config.ReadConfigFile()
@@ -31,34 +31,21 @@ var complianceSummaryForBenchmarkCmd = &cobra.Command{
 			outputFormat = configuration.OutputFormat
 		}
 
-		benchmarkIDs, err := utils.ReadStringSliceFlag(cmd, "benchmark-id")
-		if err != nil {
-			return err
+		runId := utils.ReadStringFlag(cmd, "run-id")
+		if runId == "" {
+			return fmt.Errorf("run-id flag is required")
 		}
 
-		if _, ok := configuration.Benchmarks[benchmarkIDs[0]]; ok {
-			fmt.Printf("Found stored Benchmark IDs %s", benchmarkIDs[0])
-			benchmarkIDs = configuration.Benchmarks[benchmarkIDs[0]]
-		}
+		var url string
 
-		isRoot := utils.ReadBoolFlag(cmd, "is-root")
-		requestPayload := types.ComplianceSummaryOfBenchmarkRequest{
-			Benchmarks: benchmarkIDs,
-			IsRoot:     &isRoot,
-		}
+		url = fmt.Sprintf("main/inventory/api/v3/query/async/run/%s/result", runId)
 
-		payload, err := json.Marshal(requestPayload)
-		if err != nil {
-			return err
-		}
-
-		url := fmt.Sprintf("main/compliance/api/v3/compliance/summary/benchmark")
 		request, err := request.GenerateRequest(
 			configuration.ApiKey,
 			configuration.ApiEndpoint,
-			"POST",
+			"GET",
 			url,
-			payload,
+			[]byte{},
 		)
 		if err != nil {
 			return err
@@ -79,18 +66,18 @@ var complianceSummaryForBenchmarkCmd = &cobra.Command{
 			fmt.Println(string(body))
 			return nil
 		}
+		var result types.GetAsyncQueryRunResultResponse
 
-		var summary []types.ComplianceSummaryOfBenchmarkResponse
-		err = json.Unmarshal(body, &summary)
+		err = json.Unmarshal(body, &result)
 		if err != nil {
 			return err
 		}
 
 		if outputFormat == "table" {
 			fmt.Println("Table view not supported, use json view: --output json")
-			// TODO
+			//TODO
 		} else {
-			return output.OutputJson(cmd, summary)
+			return output.OutputJson(cmd, result)
 		}
 
 		return nil

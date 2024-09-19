@@ -3,6 +3,7 @@ package get
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/adorigi/checkctl/pkg/output"
 	"io"
 	"net/http"
 
@@ -98,11 +99,7 @@ Integration info in the form 'integration=AWS,id=123,id_name=name'`)
 			fmt.Println("Table view not supported, use json view: --output json")
 			// TODO
 		} else {
-			js, err := json.MarshalIndent(summary, "", "   ")
-			if err != nil {
-				return err
-			}
-			fmt.Print(string(js))
+			return output.OutputJson(cmd, summary)
 		}
 
 		return nil

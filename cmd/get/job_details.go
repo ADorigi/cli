@@ -3,6 +3,7 @@ package get
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/adorigi/checkctl/pkg/output"
 	"github.com/adorigi/checkctl/pkg/types"
 	"io"
 	"net/http"
@@ -38,7 +39,7 @@ var jobDetailsCmd = &cobra.Command{
 		var url string
 		jobType := utils.ReadStringFlag(cmd, "job-type")
 		switch jobType {
-		case "compliance", "analytics", "discovery":
+		case "compliance", "analytics", "discovery", "query":
 			url = fmt.Sprintf("main/schedule/api/v3/job/%s/%s", jobType, jobId)
 		default:
 			return fmt.Errorf("please provide a valid job-type: compliance, analytics, discovery")
@@ -65,6 +66,7 @@ var jobDetailsCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		fmt.Println(string(body))
 
 		if response.StatusCode != 200 {
 			fmt.Println(string(body))
@@ -72,6 +74,19 @@ var jobDetailsCmd = &cobra.Command{
 		}
 
 		switch jobType {
+		case "query":
+			var job types.GetAsyncQueryRunJobStatusResponse
+			err = json.Unmarshal(body, &job)
+			if err != nil {
+				return err
+			}
+
+			if outputFormat == "table" {
+				fmt.Println("Table view not supported, use json view: --output json")
+				//TODO
+			} else {
+				return output.OutputJson(cmd, job)
+			}
 		case "compliance":
 			var job types.GetComplianceJobStatusResponse
 			err = json.Unmarshal(body, &job)
@@ -83,11 +98,7 @@ var jobDetailsCmd = &cobra.Command{
 				fmt.Println("Table view not supported, use json view: --output json")
 				//TODO
 			} else {
-				js, err := json.MarshalIndent(job, "", "   ")
-				if err != nil {
-					return err
-				}
-				fmt.Print(string(js))
+				return output.OutputJson(cmd, job)
 			}
 		case "discovery":
 			var job types.GetDescribeJobStatusResponse
@@ -100,11 +111,7 @@ var jobDetailsCmd = &cobra.Command{
 				fmt.Println("Table view not supported, use json view: --output json")
 				//TODO
 			} else {
-				js, err := json.MarshalIndent(job, "", "   ")
-				if err != nil {
-					return err
-				}
-				fmt.Print(string(js))
+				return output.OutputJson(cmd, job)
 			}
 		case "analytics":
 			var job types.GetAnalyticsJobStatusResponse
@@ -117,11 +124,7 @@ var jobDetailsCmd = &cobra.Command{
 				fmt.Println("Table view not supported, use json view: --output json")
 				//TODO
 			} else {
-				js, err := json.MarshalIndent(job, "", "   ")
-				if err != nil {
-					return err
-				}
-				fmt.Print(string(js))
+				return output.OutputJson(cmd, job)
 			}
 
 		}

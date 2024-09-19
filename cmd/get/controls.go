@@ -6,6 +6,7 @@ package get
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/adorigi/checkctl/pkg/output"
 	"io"
 	"net/http"
 
@@ -92,17 +93,10 @@ var controlsCmd = &cobra.Command{
 			return err
 		}
 
-		// if outputFormat == "table" {
-		// 	rows := utils.GenerateControlRows(getControlsResponse.Items)
-
-		// 	tables.PrintControlsTable(rows)
-		// } else {
-		js, err := json.MarshalIndent(getControlsResponse.Items, "", "   ")
+		err = output.OutputJson(cmd, getControlsResponse.Items)
 		if err != nil {
 			return err
 		}
-		fmt.Print(string(js))
-		// }
 
 		fmt.Printf(
 			"\n\n\n\nNext Page: \n\tcheckctl get controls --page-size %d --page-number %d --output %s\n",

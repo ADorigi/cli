@@ -3,6 +3,7 @@ package run
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/adorigi/checkctl/pkg/output"
 	"io"
 	"net/http"
 
@@ -103,11 +104,7 @@ var discoveryCmd = &cobra.Command{
 
 			tables.PrintDiscoveryJobsTable(rows)
 		} else {
-			js, err := json.MarshalIndent(runDiscoveryResponse, "", "   ")
-			if err != nil {
-				return err
-			}
-			fmt.Print(string(js))
+			return output.OutputJson(cmd, runDiscoveryResponse)
 		}
 
 		return nil

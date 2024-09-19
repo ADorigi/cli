@@ -3,6 +3,7 @@ package get
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/adorigi/checkctl/pkg/output"
 	"io"
 	"net/http"
 
@@ -107,13 +108,6 @@ var findingsCmd = &cobra.Command{
 			return err
 		}
 
-		js, err := json.MarshalIndent(findingsResponse, "", "   ")
-		if err != nil {
-			return err
-		}
-		fmt.Print(string(js))
-
-		return nil
-
+		return output.OutputJson(cmd, findingsResponse)
 	},
 }

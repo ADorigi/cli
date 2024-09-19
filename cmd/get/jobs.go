@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/adorigi/checkctl/pkg/config"
+	"github.com/adorigi/checkctl/pkg/output"
 	"github.com/adorigi/checkctl/pkg/request"
 	"github.com/adorigi/checkctl/pkg/types"
 	"github.com/adorigi/checkctl/pkg/utils"
@@ -32,19 +33,15 @@ var jobsCmd = &cobra.Command{
 
 		jobType := utils.ReadStringFlag(cmd, "job-type")
 		if jobType == "" {
-			fmt.Println("Error: must specify Job Type. Options: compliance, analytics, discovery")
+			fmt.Println("Error: must specify Job Type. Options: compliance, analytics, discovery, query")
 			return nil
 		}
 		if strings.ToLower(jobType) != "compliance" && strings.ToLower(jobType) != "discovery" &&
-			strings.ToLower(jobType) != "analytics" {
-			fmt.Println("Invalid job type. Options: compliance, analytics, discovery")
+			strings.ToLower(jobType) != "analytics" && strings.ToLower(jobType) != "query" {
+			fmt.Println("Invalid job type. Options: compliance, analytics, discovery, query")
 			return nil
 		}
 		interval := utils.ReadStringFlag(cmd, "interval")
-		if interval == "" {
-			fmt.Println("Error: must specify interval like: 90m, 1h, 50 minutes, 2 hours")
-			return nil
-		}
 
 		if err != nil {
 			return err
@@ -87,11 +84,7 @@ var jobsCmd = &cobra.Command{
 			fmt.Println("Table view not supported, use json view: --output json")
 			// TODO
 		} else {
-			js, err := json.MarshalIndent(jobs, "", "   ")
-			if err != nil {
-				return err
-			}
-			fmt.Print(string(js))
+			return output.OutputJson(cmd, jobs)
 		}
 
 		return nil

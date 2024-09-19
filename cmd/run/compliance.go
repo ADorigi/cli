@@ -3,6 +3,7 @@ package run
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/adorigi/checkctl/pkg/output"
 	"io"
 	"net/http"
 
@@ -102,11 +103,7 @@ var complianceCmd = &cobra.Command{
 
 			tables.PrintComplianceJobTable(rows)
 		} else {
-			js, err := json.MarshalIndent(runBenchmarkResponse, "", "   ")
-			if err != nil {
-				return err
-			}
-			fmt.Print(string(js))
+			return output.OutputJson(cmd, runBenchmarkResponse)
 		}
 
 		return nil

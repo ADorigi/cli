@@ -2,6 +2,16 @@ package types
 
 import "time"
 
+type GetAsyncQueryRunJobStatusResponse struct {
+	JobId          uint      `json:"job_id"`
+	QueryId        string    `json:"query_id"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
+	CreatedBy      string    `json:"created_by"`
+	JobStatus      string    `json:"job_status"`
+	FailureMessage string    `json:"failure_message"`
+}
+
 type GetComplianceJobStatusResponse struct {
 	JobId           uint              `json:"job_id"`
 	IntegrationInfo []IntegrationInfo `json:"integration_info"`

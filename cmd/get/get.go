@@ -4,8 +4,6 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package get
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -19,9 +17,6 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Usage: checkctl get controls|benchmarks --page-size")
-	},
 }
 
 func init() {
@@ -49,10 +44,13 @@ func init() {
 
 	GetCmd.AddCommand(jobsCmd)
 	jobsCmd.PersistentFlags().String("job-type", "", "Job Type. Options: compliance, analytics, discovery")
-	jobsCmd.PersistentFlags().String("interval", "90m", "Specify time interval like: 90m, 1h, 50 minutes, 2 hours")
+	jobsCmd.PersistentFlags().String("interval", "", "Specify time interval like: 90m, 1h, 50 minutes, 2 hours")
 
 	GetCmd.AddCommand(findingsCmd)
 	findingsCmd.PersistentFlags().StringArray("integration", []string{}, "Integration info in the form 'integration=AWS,id=123,id_name=name'"+
 		"values are optional and support regex")
 	findingsCmd.PersistentFlags().StringSlice("benchmark-id", []string{}, "Benchmark ID")
+
+	GetCmd.AddCommand(queryResultCmd)
+	queryResultCmd.PersistentFlags().String("run-id", "", "Run ID")
 }

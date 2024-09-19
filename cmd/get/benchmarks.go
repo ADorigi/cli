@@ -6,6 +6,7 @@ package get
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/adorigi/checkctl/pkg/output"
 	"io"
 	"net/http"
 
@@ -81,17 +82,10 @@ var benchmarksCmd = &cobra.Command{
 			return err
 		}
 
-		// if outputFormat == "table" {
-		// 	rows := utils.GenerateBenchmarkRows(getBenchmarksResponse.Items)
-
-		// 	tables.PrintBenchmarksTable(rows)
-		// } else {
-		js, err := json.MarshalIndent(getBenchmarksResponse.Items, "", "   ")
+		err = output.OutputJson(cmd, getBenchmarksResponse.Items)
 		if err != nil {
 			return err
 		}
-		fmt.Print(string(js))
-		// }
 
 		fmt.Printf(
 			"\n\n\n\nNext Page: \n\tcheckctl get benchmarks --page-size %d --page-number %d --output %s\n",
