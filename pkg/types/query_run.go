@@ -1,5 +1,9 @@
 package types
 
+import (
+	"time"
+)
+
 type GetAsyncQueryRunResultResponse struct {
 	RunId       string           `json:"runID"`
 	QueryID     string           `json:"queryID"`
@@ -14,4 +18,13 @@ type GetAsyncQueryRunResultResponse struct {
 type QueryParameter struct {
 	Key      string `json:"key" example:"key"`
 	Required bool   `json:"required" example:"true"`
+}
+
+type QueryRunnerJob struct {
+	ID        uint
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	QueryId   string
+	CreatedBy string
+	Status    string
 }
