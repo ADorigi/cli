@@ -5,6 +5,10 @@ on:
       branches:
         - "main"
 
+env:
+    HOMEBREW_TAP: "homebrew-cli-tap"
+    OWNER_EMAIL: "dev@kaytu.io"
+
 permissions:
   contents: write
 
@@ -41,6 +45,8 @@ jobs:
           version: latest
           args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           REPOSITORY_NAME: ${{ github.repository }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          HOMEBREW_TAP: ${{ env.HOMEBREW_TAP }}
+          OWNER_EMAIL: ${{ env.OWNER_EMAIL }}
