@@ -50,7 +50,7 @@ archives:
     builds: [darwin]
 
 brews:
-  - name: kaytu
+  - name: checkctl
     homepage: https://github.com/{{ .Env.REPOSITORY_NAME }}
     repository:
       owner: "{{ .Env.REPOSITORY_OWNER }}"
