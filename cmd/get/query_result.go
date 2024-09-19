@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/adorigi/checkctl/pkg/output"
+	"github.com/adorigi/checkctl/pkg/output/tables"
 	"github.com/adorigi/checkctl/pkg/types"
 	"io"
 	"net/http"
@@ -28,7 +29,7 @@ var queryResultCmd = &cobra.Command{
 
 		outputFormat := utils.ReadStringFlag(cmd, "output")
 		if outputFormat == "" {
-			outputFormat = configuration.OutputFormat
+			outputFormat = "table"
 		}
 
 		runId := utils.ReadStringFlag(cmd, "run-id")
@@ -74,8 +75,7 @@ var queryResultCmd = &cobra.Command{
 		}
 
 		if outputFormat == "table" {
-			fmt.Println("Table view not supported, use json view: --output json")
-			//TODO
+			tables.PrintQueryResultTable(result.ColumnNames, result.Result)
 		} else {
 			return output.OutputJson(cmd, result)
 		}
