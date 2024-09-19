@@ -14,6 +14,7 @@ CLI for opengovernance
     - controls 
     - jobs
     - job-details
+    - findings
 - run compliance
 - run discovery
 
