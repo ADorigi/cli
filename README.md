@@ -4,6 +4,12 @@ CLI for opengovernance
 
 ![Root Command GIF](./tapes/gif/root.gif)
 
+## Installation
+
+```
+brew tap kaytu-io/cli-tap && brew install checkctl
+```
+
 ## List of Commands
 
 - [configure](#configure)
