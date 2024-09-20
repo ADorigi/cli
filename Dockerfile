@@ -4,5 +4,5 @@ RUN mkdir app
 
 RUN apt-get update && apt-get install -y ca-certificates
 
-COPY ./bin/checkctl-linux app/
+COPY ./dist/linux_linux_arm64/checkctl app/
 
